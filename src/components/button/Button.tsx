@@ -1,7 +1,6 @@
-import React from 'react'
 import './button.css'
 
-const Button = (contenido: any) => {
+const Button = () => {
   return (
     <button className='button'>content</button>
   )

@@ -26,9 +26,9 @@
   border-bottom-right-radius: 12px;
 }
 
-.main-table tbody td {
+/* .main-table tbody td {
   
-}
+} */
 
 .main-table tr:nth-child(even) {
   background: var(--secondary-color);
