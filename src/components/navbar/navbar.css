@@ -1,0 +1,75 @@
+.navbar{
+  font-family: var(--font-family);
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  background-color: transparent;
+  align-items: center;
+  justify-content: space-between;
+}
+.navbar section{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.navbar-items{
+  height: 35px;
+  background-color: var(--white);
+  border-radius: 50px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: var(--regular-text);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.navbar-items a{
+  text-decoration: none;
+  color: var(--regular-text-color);
+}
+
+.navbar-item{
+  height: 100%;
+  padding: 0 15px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-item:hover{
+    background-color: var(--secondary-color);
+}
+
+.navbar-button{
+  position:relative;
+  width: 35px;          /* Equal width and height */
+  height: 35px;
+  background-color: var(--item-color);
+  color: var(--regular-text-color);
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.running-icon{
+    position: absolute;
+    left: 7px;
+}
+
+.plus-icon{
+    font-size: 12px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}

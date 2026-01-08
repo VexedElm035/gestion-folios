@@ -1,0 +1,61 @@
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  color-scheme: light dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  --heading-text: 20px;
+  --regular-text: 18px;
+  --caption-text: 14px;
+  --font-family: Arial;
+
+  font-family: var(--font-family);
+  font-size: var(--regular-text);
+}
+
+/* Modo claro (por defecto) */
+:root,
+:root[data-theme="light"] {
+  --background-color: #ffffff;
+  --primary-color: #ffffff;
+  --secondary-color: #f4f5f5;
+  --regular-text-color: #3e3e3e;
+  --secondary-text-color: #898989;
+  --item-color: #FFFFFF;
+}
+
+/* Modo oscuro */
+:root[data-theme="dark"] {
+  --background-color: #242424;
+  --primary-color: #242424;
+  --secondary-color: #2e2e2e;
+  --regular-text-color: #dbdbdb;
+  --secondary-text-color: #9a9a9a;
+  --item-color: #292929;
+}
+
+body {
+  margin: 0;
+  display: flex;
+
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--background-color);
+  color: var(--regular-text-color);
+}
+
+*{
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+#root {
+  width: 100%;
+}

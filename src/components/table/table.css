@@ -1,0 +1,71 @@
+.main-table{
+  background-color: transparent;
+  font-family: var(--font-family);
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.main-table td, .main-table th {
+  padding: 3px 2px;
+}
+
+.main-table tr td {
+  color: var(--secondary-text-color);
+}
+
+.main-table tr td:first-child {
+  padding-left: 24px;
+  color: var(--regular-text-color);
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.main-table tr td:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.main-table tbody td {
+  
+}
+
+.main-table tr:nth-child(even) {
+  background: var(--secondary-color);
+}
+
+.main-table thead {
+  background: transparent;
+  border-bottom: 1px solid var(--secondary-text-color);
+}
+
+.main-table thead th {
+  color: var(--secondary-text-color);
+  font-size: var(--caption-text);
+  font-weight: normal;
+  border-left: 1px solid var(--secondary-text-color);
+}
+.main-table thead th:first-child {
+  border-left: none;
+}
+
+.main-table tfoot {
+  font-size: var(--caption-text);
+  font-weight: bold;
+  color: var(--secondary-text-color);
+  background: transparent;
+  border-top: 1px solid var(--secondary-text-color);
+}
+.main-table tfoot td {
+  font-size: var(--caption-text);
+}
+.main-table tfoot .links {
+  text-align: right;
+}
+.main-table tfoot .links a{
+  display: inline-block;
+  background: #1C6EA4;
+  color: #FFFFFF;
+  padding: 2px 8px;
+  border-radius: 5px;
+}
