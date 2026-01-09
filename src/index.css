@@ -7,9 +7,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   
-  --heading-text: 20px;
-  --regular-text: 18px;
-  --caption-text: 14px;
+  --heading-text: 24px; /*20*/
+  --regular-text: 20px; /*18*/
+  --caption-text: 16px; /*14*/
   --font-family: Arial;
 
   font-family: var(--font-family);
@@ -18,22 +18,26 @@
 
 /* Modo claro (por defecto) */
 :root,
-:root[data-theme="light"] {
+:root.light {
   --background-color: #ffffff;
+  --background-color-rgb: 255, 255, 255;
   --primary-color: #ffffff;
   --secondary-color: #f4f5f5;
   --regular-text-color: #3e3e3e;
   --secondary-text-color: #898989;
+  --secondary-text-color-rgb: 137, 137, 137;
   --item-color: #FFFFFF;
 }
 
 /* Modo oscuro */
-:root[data-theme="dark"] {
+:root.dark {
   --background-color: #242424;
+  --background-color-rgb: 36, 36, 36;
   --primary-color: #242424;
-  --secondary-color: #2e2e2e;
+  --secondary-color: #2e2e2e; 
   --regular-text-color: #dbdbdb;
   --secondary-text-color: #9a9a9a;
+  --secondary-text-color-rgb: 154, 154, 154;
   --item-color: #292929;
 }
 
@@ -47,9 +51,9 @@ body {
   color: var(--regular-text-color);
 }
 
-*{
+/* *{
   transition: background-color 0.3s ease, color 0.3s ease;
-}
+} */
 
 button:focus,
 button:focus-visible {

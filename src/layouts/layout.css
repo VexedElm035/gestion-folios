@@ -1,0 +1,22 @@
+.layout {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.main-content {
+  padding-top: 75px; /* Altura del navbar fijo + margen */
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Para responsive futuro */
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: 75px;
+    padding-left: 3%;
+    padding-right: 3%;
+  }
+}

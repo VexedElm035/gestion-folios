@@ -1,0 +1,23 @@
+.input-container{
+    display: flex;
+}
+
+.input-label{
+    font-family: var(--font-family);
+    font-size: var(--caption-text);
+    margin-right: 3px;
+    display: flex;
+    align-items: center;
+    color: var(--primary-text-color);
+}
+
+.input-element{
+    font-family: var(--font-family);
+    font-size: var(--caption-text);
+    border-radius: 25px;
+    border: none;
+    height: calc(var(--regular-text) + 5px);
+    padding: 0 8px;
+    background-color: var(--secondary-color);
+    color: var(--primary-text-color);
+}

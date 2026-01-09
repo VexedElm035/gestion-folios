@@ -1,29 +1,25 @@
 import './table.css';
 
+const campos= ['Folio', 'Nombre', 'Apellido', 'Distancia', 'Telefono'];
+
 const persons=[
-    {name: "luis",
-     folio: "123",
-     tel: "9631410015"
-    },
-    {name: "naso",
-     folio: "456",
-     tel: "9631410013"},
-    {name: "dudosa",
-     folio: "432",
-     tel: "9631410011"},
-    {name: "buno",
-     folio: "982",
-     tel: "9631410012"}
+...Array.from({ length: 50 }, (_, i) => ({
+  folio: Math.random().toString(36).substring(2, 8).toUpperCase(),
+  name: ['Juan', 'María', 'Pedro', 'Ana', 'Luis', 'Carmen', 'José', 'Laura', 'Miguel', 'Sofia'][Math.floor(Math.random() * 10)],
+  apellido: ['García', 'Rodríguez', 'Martínez', 'López', 'González', 'Pérez', 'Sánchez', 'Ramírez', 'Torres', 'Flores'][Math.floor(Math.random() * 10)],
+  distancia: ['5KM', '10KM', '15KM', '21KM', '42KM'][Math.floor(Math.random() * 5)],
+  tel: `${Math.floor(Math.random() * 9000000000) + 1000000000}`
+}))
 ];
 
 const Table = () => {
   return (
-    <table className='main-table'>
+    <table className='main-table sticky-header-table'>
         <thead>
             <tr>
-                <th>Nombre</th>
-                <th>Folio</th>
-                <th>Telefono</th>
+                {campos.map((campo) => (
+                  <th key={campo}>{campo}</th>
+                ))}
             </tr>
         </thead>
         <tfoot>
@@ -36,8 +32,10 @@ const Table = () => {
         <tbody>
             {persons.map((person) => (
                 <tr key={person.folio}>
-                    <td>{person.name}</td>
                     <td>{person.folio}</td>
+                    <td>{person.name}</td>
+                    <td>{person.apellido}</td>
+                    <td>{person.distancia}</td>
                     <td>{person.tel}</td>
                 </tr>
             ))}

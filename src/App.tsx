@@ -1,23 +1,22 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Participants, Settings, Timing } from './views';
+import Layout from './layouts/Layout';
+import { ThemeProvider } from './context/ThemeContext';
 import './App.css'
-import Button from './components/button/Button'
-import Table from './components/table/Table'
-import Form from './components/form/Form'
-import Navbar from './components/navbar/Navbar'
-import { useTheme } from './hooks/useTheme'
 
 function App() {
-  const { theme, toggleTheme } = useTheme()
-
   return (
-    <>
-      <Navbar theme={theme} toggleTheme={toggleTheme} />
-      <Table />
-      <br />
-      <Form />
-      <br />
-      <Button />
-      <br />
-    </>
+    <ThemeProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Layout />}>
+            <Route index element={<Participants />} />
+            <Route path='settings' element={<Settings />} />
+            <Route path='timing' element={<Timing />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   )
 }
 
