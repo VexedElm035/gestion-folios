@@ -32,16 +32,17 @@ const Navbar = () => {
                 ))}
             </div>
         </section>
+
         <section>
-          <div className={`navbar-button add-button running-section ${AddRunner ? 'expanded' : ''}`}>
+          <div className={`navbar-button running-container ${AddRunner ? 'expanded' : 'collapsed'}`}>
             {AddRunner && (
-              <div className='runner-inputs'>  
+              <div className='runner-fields'>  
                 <Input id="nombre" label="Nombre" type="text" />
-                <Input id="apellido" label="Apellido" type="text" />
+                {/* <Input id="apellido" label="Apellido" type="text" /> */}
                 <Dropdown id="distancia" label="Distancia" options={[{value: '5', label: '5 KM'}, {value: '10', label: '10 KM'}]}/>
               </div>
             )}
-            <button onClick={() => setAddRunner(!AddRunner)} className={`navbar-button add-button running-button ${AddRunner ? 'add-prebutton' : ''}`}>
+            <button onClick={() => setAddRunner(!AddRunner)} className={`running-button ${AddRunner ? 'add-postbutton' : 'add-prebutton'}`}>
               {!AddRunner && (
                 <div className='running-icons-container'>
                   <PiPersonSimpleRun className='running-icon'/>
@@ -52,6 +53,7 @@ const Navbar = () => {
             </button>
           </div>
         </section>
+        
         <section>
             <button className='navbar-button'><IoIosSearch /></button>
             
