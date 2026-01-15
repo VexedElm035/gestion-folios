@@ -63,3 +63,20 @@ button:focus-visible {
 #root {
   width: 100%;
 }
+
+
+@media (max-width: 820px) {
+  :root {
+    --heading-text: 20px; /*20*/
+    --regular-text: 16px; /*18*/
+    --caption-text: 12px; /*14*/
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --heading-text: 16px; /*20*/
+    --regular-text: 12px; /*18*/
+    --caption-text: 8px; /*14*/
+  }
+}

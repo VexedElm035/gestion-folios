@@ -18,6 +18,7 @@
   padding: 0 10px;
   text-align: right;
 }
+
 .main-table thead th:first-child {
   padding-left: 24px;
   border-left: none;
@@ -103,4 +104,20 @@
   color: #FFFFFF;
   padding: 2px 8px;
   border-radius: 5px;
+}
+
+@media (max-width: 480px) {
+  .main-table thead th:first-child {
+    padding-left: 4px;
+  }
+  
+  .main-table tr td {
+    padding: 12px 8px;
+  }
+
+  .main-table tr td:first-child {
+    padding-left: 4px;
+  }
+
+
 }
