@@ -66,7 +66,7 @@
     height: calc(var(--regular-text) + 30px);
     position: absolute;
     bottom: 0px;
-    display: none;
+    display: flex;
   }
 
   .navbar-item-icon{
@@ -83,7 +83,7 @@
 
 @media (max-width: 480px) {
   .navbar-item span{
-    display: none;
+    display: flex;
   }
 }
 /* .navbar-item:hover{
