@@ -9,38 +9,62 @@ import './runnerbutton.css';
 
 gsap.registerPlugin(useGSAP);
 
+const STORAGE_KEY = 'addRunnerExpanded';
+const COLLAPSED_WIDTH = 'calc(var(--regular-text) + 180px)';
+const COLLAPSED_HEIGHT = 'calc(var(--regular-text) + 15px)';
+
+const readStoredExpanded = (): boolean => {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) === true : false;
+  } catch {
+    return false;
+  }
+};
+
 const RunnerButton = () => {
   const textRef = useRef<HTMLDivElement>(null);
+  const collapsedIconsRef = useRef<HTMLDivElement>(null);
+  const expandedIconRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const [AddRunner, setAddRunner] = useState(() => {
-    const saved = localStorage.getItem('addRunnerExpanded');
-    return saved ? JSON.parse(saved) : false;
-  });
+  const [isExpanded, setIsExpanded] = useState<boolean>(() => readStoredExpanded());
 
   useEffect(() => {
-    localStorage.setItem('addRunnerExpanded', JSON.stringify(AddRunner));
-  }, [AddRunner]);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(isExpanded));
+    } catch {
+      // ignore (storage could be unavailable)
+    }
+  }, [isExpanded]);
 
   useGSAP(() => {
-    if (AddRunner) {
-        const text = textRef.current;
-        const content = contentRef.current;
-        const container = containerRef.current;
-        if (text && content && container) {
-            gsap.set(text, { opacity: 0, display: 'none' });
-            gsap.set(content, {
-                display: 'flex',
-                opacity: 1
-            });
-            gsap.set(container, {
-              width: "auto",
-              height: "auto",
-            });
-        }
+    const text = textRef.current;
+    const collapsedIcons = collapsedIconsRef.current;
+    const expandedIcon = expandedIconRef.current;
+    const content = contentRef.current;
+    const container = containerRef.current;
+    const button = buttonRef.current;
+    if (!text || !collapsedIcons || !expandedIcon || !content || !container || !button) return;
+
+    if (isExpanded) {
+      gsap.set(text, { opacity: 0, display: 'none' });
+      gsap.set(collapsedIcons, { opacity: 0, display: 'none' });
+      gsap.set(expandedIcon, { display: 'flex', opacity: 1 });
+      gsap.set(content, { display: 'flex', opacity: 1 });
+      gsap.set(container, { width: 'auto', height: 'auto' });
+      gsap.set(button, { height: 'auto' });
+    } else {
+      gsap.set(expandedIcon, { opacity: 0, display: 'none' });
+      gsap.set(content, { opacity: 0, display: 'none' });
+      gsap.set(container, { width: COLLAPSED_WIDTH, height: COLLAPSED_HEIGHT });
+      gsap.set(text, { display: 'flex', opacity: 1 });
+      gsap.set(collapsedIcons, { display: 'block', opacity: 1 });
+      gsap.set(button, { height: COLLAPSED_HEIGHT });
     }
-  }, [AddRunner]);
+  }, [isExpanded]);
 
   const isAnimating = useRef(false);
 
@@ -48,61 +72,76 @@ const RunnerButton = () => {
     if (isAnimating.current) return;
 
     const text = textRef.current;
+    const collapsedIcons = collapsedIconsRef.current;
+    const expandedIcon = expandedIconRef.current;
     const content = contentRef.current;
     const container = containerRef.current;
+    const button = buttonRef.current;
     
-    if (!text || !content || !container) return;
+    if (!text || !collapsedIcons || !expandedIcon || !content || !container || !button) return;
     isAnimating.current = true;
     
-    if (!AddRunner) {
+    if (!isExpanded) {
       const tl = gsap.timeline({
         onComplete: () => {
           isAnimating.current = false;
-          setAddRunner(true);
+          setIsExpanded(true);
         }
       });
-      tl.to(text, { opacity: 0, display: 'none', duration: 0.3 })
-        .to(content, { display: 'flex', opacity: 0}, '-=0.2')
-        .to(container, { width: 'auto', height: 'auto', duration: 0.1 }, "-=0.2")
-        .to(content, { display: 'flex', opacity: 1, duration: 0.2 }, "-=0.1");
+      tl.to([text, collapsedIcons], { opacity: 0, duration: 0.2 })
+        .set([text, collapsedIcons], { display: 'none' })
+        .set(expandedIcon, { display: 'flex', opacity: 0 })
+        .set(button, { height: 'auto'})
+        .set(content, { display: 'flex', opacity: 0 })
+        .to(container, { width: 'auto', height: 'auto', duration: 0.3 })
+        .to(expandedIcon, { opacity: 1, duration: 0.2 }, "-=0.05")
+        .to(content, { opacity: 1, duration: 0.2 }, "-=0.3");
     }
     else {
       const tl = gsap.timeline({
         onComplete: () => {
           isAnimating.current = false;
-          setAddRunner(false);
+          setIsExpanded(false);
         }
       });
-      tl.to(content, { opacity: 0, duration: 0.2})
-        .to(container, { width: "calc(var(--regular-text) + 180px)", height: "calc(var(--regular-text) + 15px)", duration: 0.1 }, "-=0.1")
-        .to(content, { display: 'none'})
-        .to(text, { display: 'flex', opacity: 1, duration: 0.2 });
+      tl.to([content, expandedIcon], { opacity: 0, duration: 0.2 })
+        .to(container, { width: COLLAPSED_WIDTH, height: COLLAPSED_HEIGHT, duration: 0.12 }, "-=0.05")
+        .set(content, { display: 'none' })
+        .set(expandedIcon, { display: 'none' })
+        .set(button, { height: COLLAPSED_HEIGHT })
+        .set([text, collapsedIcons], { display: 'flex', opacity: 0 })
+        .set(collapsedIcons, { display: 'block' })
+        .to([text, collapsedIcons], { opacity: 1, duration: 0.2 });
     }
   };
 
   return (
     <div className='runner-wrapper'>
       <div className='runner-container-center'>
-      <button onClick={handleToggle} className={`add-button-default running-button ${AddRunner ? 'add-postbutton' : ''}`}>
-          {AddRunner ? (
-            <div className={`running-icons-container`}>
-              <IoIosArrowDown /> 
-
-            </div>
-          ) : (
-            <div className={`running-icons-container`}>
-            <PiPersonSimpleRun className='running-icon'/>
-            <GoPlus className='plus-icon'/>
-            </div>
-          )}
-              <div ref={textRef}>
-          
+      <button
+      ref={buttonRef}
+        type="button"
+        onClick={handleToggle}
+        className={`running-button ${isExpanded ? 'is-expanded' : ''}`}
+        aria-expanded={isExpanded}
+        aria-controls="add-runner-panel"
+      >
+        <div className='running-icons-container'>
+          <div ref={collapsedIconsRef} className='running-icons running-icons-collapsed'>
+            <PiPersonSimpleRun className='running-icon' />
+            <GoPlus className='plus-icon' />
+          </div>
+          <div ref={expandedIconRef} className='running-icons running-icons-expanded'>
+            <IoIosArrowDown className='arrow-icon' />
+          </div>
+        </div>
+        <div ref={textRef} className="running-label">
           <span className='running-text-button'>Agregar Corredor</span>
         </div>
       </button>
 
     <div ref={containerRef} className={`running-container`}>
-      <div ref={contentRef} className="window-content" style={{display: 'none', opacity: 0}}>
+      <div ref={contentRef} id="add-runner-panel" className="window-content">
 
         <form action="" className='runner-fields'>
           <Input id="nombre" label="Nombre" type="text" />
@@ -115,8 +154,6 @@ const RunnerButton = () => {
       
       </div>
     </div>
-
-
       </div>
     </div>
   )
