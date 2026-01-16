@@ -10,7 +10,6 @@ gsap.registerPlugin(useGSAP);
 const Timing = () => {
   const scopeRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const iconRef = useRef<HTMLSpanElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const itemsWrapRef = useRef<HTMLDivElement>(null);
 
@@ -29,12 +28,10 @@ const Timing = () => {
 
   useGSAP(
     () => {
+      const button = buttonRef.current;
       const menu = menuRef.current;
-      const icon = iconRef.current;
       const itemsWrap = itemsWrapRef.current;
-      if (!menu || !icon || !itemsWrap) return;
-
-      const items = Array.from(itemsWrap.querySelectorAll('[data-timing-menu-item]'));
+      if (!button || !menu || !itemsWrap) return;
 
       gsap.set(menu, {
         autoAlpha: 0,
@@ -46,11 +43,24 @@ const Timing = () => {
         transformOrigin: 'top right',
         display: 'none',
       });
-      gsap.set(items, { autoAlpha: 0, x: -10, y: -8, rotate: 10 });
-      gsap.set(icon, { rotate: 0, transformOrigin: '50% 50%' });
+
+      gsap.set(button, {
+        backgroundColor: '#ffffff',
+        color: '#0158d1',
+      });
 
       const tl = gsap.timeline({ paused: true });
       tl.set(menu, { display: 'block' }, 0)
+        .to(
+          button,
+          {
+            backgroundColor: '#0158d1',
+            color: '#ffffff',
+            duration: 0.35,
+            ease: 'power2.out',
+          },
+          0
+        )
         .to(
           menu,
           {
@@ -64,28 +74,6 @@ const Timing = () => {
             ease: 'power3.out',
           },
           0
-        )
-        .to(
-          icon,
-          {
-            rotate: 135,
-            duration: 0.3,
-            ease: 'power2.out',
-          },
-          0
-        )
-        .to(
-          items,
-          {
-            autoAlpha: 1,
-            x: 0,
-            y: 0,
-            rotate: 0,
-            duration: 0.28,
-            ease: 'power3.out',
-            stagger: 0.06,
-          },
-          0.12
         );
 
       tl.eventCallback('onComplete', () => {
@@ -96,7 +84,6 @@ const Timing = () => {
         isAnimatingRef.current = false;
         setIsOpen(false);
         gsap.set(menu, { display: 'none' });
-        gsap.set(items, { autoAlpha: 0, x: -10, y: -8, rotate: 10 });
       });
 
       menuTlRef.current = tl;
@@ -160,7 +147,7 @@ const Timing = () => {
           aria-controls="timing-action-menu"
           onClick={handleToggle}
         >
-          <span ref={iconRef} className="timing-fab__icon" aria-hidden>
+          <span className="timing-fab__icon" aria-hidden>
             {isOpen ? <IoClose size={22} /> : <IoFlash size={22} />}
           </span>
           <span className="timing-fab__sr">Abrir acciones</span>

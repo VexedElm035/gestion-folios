@@ -7,9 +7,10 @@
     <title>carrera</title>
     <script>
       (function() {
-        const theme = localStorage.getItem('theme') || 
-          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.classList.add(theme);
+        const saved = localStorage.getItem('theme');
+        const system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        const effective = saved === 'dark' || saved === 'light' ? saved : system;
+        document.documentElement.classList.add(effective);
       })();
     </script>
   </head>

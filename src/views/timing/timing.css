@@ -39,18 +39,18 @@
 	cursor: pointer;
 	display: grid;
 	place-items: center;
-	background: linear-gradient(135deg, #0158d1, #3b82f6);
-	color: #fff;
+	background: #ffffff;
+	color: #0158d1;
 	box-shadow:
-		0 12px 30px rgba(1, 88, 209, 0.35),
-		0 0 0 1px rgba(255, 255, 255, 0.14) inset;
+		0 12px 30px rgba(0, 0, 0, 0.12),
+		0 0 0 1px rgba(1, 88, 209, 0.16) inset;
 	-webkit-tap-highlight-color: transparent;
 }
 
 .timing-fab__button:hover {
 	box-shadow:
-		0 14px 36px rgba(1, 88, 209, 0.42),
-		0 0 0 1px rgba(255, 255, 255, 0.18) inset;
+		0 14px 36px rgba(0, 0, 0, 0.16),
+		0 0 0 1px rgba(255, 255, 255, 0.16) inset;
 }
 
 .timing-fab__button:active {

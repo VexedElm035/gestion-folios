@@ -1,9 +1,24 @@
 .options-menu{
-    background-color: red;
+    /* background-color: red; */
     display: flex;
     flex-direction: column;
     position: absolute;
     right: 40px;
-    top: 60px;
+    top: 65px;
     font-size: var(--caption-text);
+    transform-origin: top right;
+    padding: 5px 15px 10px 15px;
+    border-radius: 25px;
+    border: 1px solid rgba(var(--secondary-text-color-rgb), 0.35);
+    background-color: rgba(var(--background-color-rgb), 0.98);
 }
+
+.options-menu-theme{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    margin-bottom: 0px;
+    gap: 15px;
+}
+
