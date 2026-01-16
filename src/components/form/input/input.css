@@ -21,3 +21,7 @@
     background-color: var(--secondary-color);
     color: var(--primary-text-color);
 }
+
+.input-element::placeholder{
+    color: var(--secondary-text-color);
+}

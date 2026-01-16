@@ -1,12 +1,10 @@
-import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { IoIosSearch } from "react-icons/io";
-import { IoIosMore } from "react-icons/io";
 import { IoMdPerson } from "react-icons/io";
 import { IoMdStopwatch } from "react-icons/io";
 import { IoMdSettings } from "react-icons/io";
 import Options from '../options/Options';
 import RunnerButton from './elements/RunnerButton';
+import SearchBar from './elements/SearchBar';
 import './navbar.css';
 
 
@@ -18,10 +16,10 @@ const navbarItems = [
 
 const Navbar = () => {
   const location = useLocation();
-  const [optionsMenu, setOptionsMenu] = useState(false);
+ 
   return (
     <div className='navbar'>
-      <section>
+      <section className='navigation-section'>
         <div className='navbar-items'>
           {navbarItems.map((item, index) => (
             <div key={index} 
@@ -37,17 +35,13 @@ const Navbar = () => {
         </div>
       </section>
 
-        <section>
+        <section className='runner-section'>
           <RunnerButton />
         </section>
         
-        <section>
-            <button className='navbar-button'><IoIosSearch /></button>
-            
-            <button onClick={()=>setOptionsMenu(!optionsMenu)} className='navbar-button'><IoIosMore /></button>
-            {optionsMenu && (
-                  <Options />
-            )}
+        <section className='options-section'>
+            <SearchBar />
+            <Options />
         </section>
 
     </div>
