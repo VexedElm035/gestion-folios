@@ -7,7 +7,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
     justify-content: start;
     height: calc(var(--regular-text) + 10px);
     width: calc(var(--regular-text) + 170px);
@@ -17,6 +17,13 @@
 /* Submenu simple (abre a la izquierda) */
 .options-menu-item{
     position: relative;
+    cursor: pointer;
+    border-radius: 15px;
+    padding: 0px 10px;
+}
+
+.options-menu-item:hover{
+    background-color: rgba(var(--secondary-text-color-rgb), 0.1);
 }
 
 .options-submenu{
@@ -25,32 +32,36 @@
     top: 0;
     display: none;
     width: auto;
-    padding: 5px 15px 10px 15px;
-    border-radius: 15px;
+    height: auto;
+    padding: 5px 5px;
+    border-radius: 10px;
     border: 1px solid rgba(var(--secondary-text-color-rgb), 0.35);
     background-color: rgba(var(--background-color-rgb), 0.98);
 }
 
-.options-menu-item:hover .options-submenu,
+.options-submenu-item{
+    display: flex;
+    align-items: center;
+    font-size: calc(var(--caption-text) - 1px);
+    width: auto;
+    min-width: calc(var(--caption-text) + 70px);
+    padding: 5px 10px;
+    display: flex;
+    justify-content: start;
+    gap: 5px;
+    white-space: nowrap;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.options-submenu-item:hover{
+    background-color: rgba(var(--secondary-text-color-rgb), 0.1);
+}
+
+.options-submenu-item-circle{
+    font-size: calc(var(--caption-text) - 10px);
+}
+
 .options-menu-item.is-open .options-submenu{
     display: block;
-}
-
-.sort-icons{
-    position: relative;
-    display: flex;
-    width: 16px;
-    height: 16px;
-}
-
-.sort-icons-icon-up{
-    position: absolute;
-    left: -3px;
-}
-
-.sort-icons-icon-down{
-    position: absolute;
-    /* top: 8px;
-    left: 0px; */
-    left: 4px;
 }
