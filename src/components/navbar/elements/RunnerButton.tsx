@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react';
 import { PiPersonSimpleRun } from "react-icons/pi";
 import { GoPlus } from "react-icons/go";
 import { IoIosArrowDown } from "react-icons/io";
-import { Dropdown, Input } from '../../';
+import Form from '../../form/Form';
 import './runnerbutton.css';
 
 gsap.registerPlugin(useGSAP);
@@ -142,16 +142,7 @@ const RunnerButton = () => {
 
     <div ref={containerRef} className={`running-container`}>
       <div ref={contentRef} id="add-runner-panel" className="window-content">
-
-        <form action="" className='runner-fields'>
-          <Input id="nombre" label="Nombre" type="text" />
-          <Input id="apellido" label="Apellido" type="text" />
-          <Dropdown id="sexo" label="Sexo" options={[{value: 'M', label: 'Masculino'}, {value: 'F', label: 'Femenino'}]}/>
-          <Dropdown id="distancia" label="Distancia" options={[{value: '5', label: '5 KM'}, {value: '10', label: '10 KM'}]}/>
-          <Input id="telefono" label="Telefono" type="tel" />
-          <button className='running-button add-runner-button' type='submit'>Agregar</button>
-        </form>
-      
+        <Form />
       </div>
     </div>
       </div>

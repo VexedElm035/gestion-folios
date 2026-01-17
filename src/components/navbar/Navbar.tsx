@@ -34,6 +34,8 @@ const Navbar = () => {
           ))}
         </div>
       </section>
+      <div className='secondary-section'>
+
 
         <section className='runner-section'>
           <RunnerButton />
@@ -44,6 +46,7 @@ const Navbar = () => {
             <Options />
         </section>
 
+      </div>
     </div>
   )
 }

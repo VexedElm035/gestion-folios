@@ -1,11 +1,16 @@
+import { Dropdown, Input } from '../';
 import './form.css';
 
 const Form = () => {
   return (
-    <div className='form'>
-        <label className='form_label' htmlFor="">label</label>
-        <input className='form_input' type="text" />
-    </div>
+    <form action="" className='runner-fields'>
+      <Input id="nombre" label="Nombre" type="text" />
+      <Input id="apellido" label="Apellido" type="text" />
+      <Dropdown id="sexo" label="Sexo" options={[{value: 'M', label: 'Masculino'}, {value: 'F', label: 'Femenino'}]}/>
+      <Dropdown id="distancia" label="Distancia" options={[{value: '5', label: '5 KM'}, {value: '10', label: '10 KM'}]}/>
+      <Input id="telefono" label="Telefono" type="tel" />
+      <button className='running-button add-runner-button' type='submit'>Agregar</button>
+    </form>
   )
 }
 

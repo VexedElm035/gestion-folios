@@ -4,6 +4,7 @@
   width: 100%;
   text-align: left;
   border-collapse: collapse;
+  overflow-y: auto;
 }
 
 .main-table td, .main-table th {
@@ -107,6 +108,10 @@
 }
 
 @media (max-width: 480px) {
+  .main-table.sticky-header-table thead {
+    top: 140px;
+  }
+
   .main-table thead th:first-child {
     padding-left: 4px;
   }
