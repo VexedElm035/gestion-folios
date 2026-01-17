@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 export type TableColumnKey =
   | 'folio'
@@ -18,6 +18,8 @@ type TableViewContextValue = {
   setAll: (value: boolean) => void
 }
 
+const STORAGE_KEY = 'tableVisibleColumns'
+
 const DEFAULT_VISIBLE_COLUMNS: VisibleColumns = {
   folio: true,
   name: true,
@@ -28,10 +30,41 @@ const DEFAULT_VISIBLE_COLUMNS: VisibleColumns = {
   fecha_registro: true,
 }
 
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null
+
+const readStoredVisibleColumns = (): VisibleColumns => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) return DEFAULT_VISIBLE_COLUMNS
+
+    const parsed: unknown = JSON.parse(raw)
+    if (!isRecord(parsed)) return DEFAULT_VISIBLE_COLUMNS
+
+    const merged: VisibleColumns = { ...DEFAULT_VISIBLE_COLUMNS }
+    ;(Object.keys(DEFAULT_VISIBLE_COLUMNS) as TableColumnKey[]).forEach((key) => {
+      const value = parsed[key]
+      if (typeof value === 'boolean') merged[key] = value
+    })
+
+    return merged
+  } catch {
+    return DEFAULT_VISIBLE_COLUMNS
+  }
+}
+
 const TableViewContext = createContext<TableViewContextValue | null>(null)
 
 export const TableViewProvider = ({ children }: { children: React.ReactNode }) => {
-  const [visibleColumns, setVisibleColumns] = useState<VisibleColumns>(DEFAULT_VISIBLE_COLUMNS)
+  const [visibleColumns, setVisibleColumns] = useState<VisibleColumns>(() => readStoredVisibleColumns())
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(visibleColumns))
+    } catch {
+      // ignore (storage could be unavailable)
+    }
+  }, [visibleColumns])
 
   const toggleColumn = (key: TableColumnKey) => {
     setVisibleColumns((prev) => ({ ...prev, [key]: !prev[key] }))
