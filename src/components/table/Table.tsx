@@ -13,9 +13,10 @@ type TableProps<Row> = {
   rows: Row[]
   getRowKey?: (row: Row, index: number) => Key
   visibleColumnKeys?: ReadonlyArray<string>
+  stickyHeader?: boolean
 }
 
-const Table = <Row,>({ columns, rows, getRowKey, visibleColumnKeys }: TableProps<Row>) => {
+const Table = <Row,>({ columns, rows, getRowKey, visibleColumnKeys, stickyHeader = true }: TableProps<Row>) => {
   const visible = visibleColumnKeys
     ? columns.filter((col) => visibleColumnKeys.includes(col.key))
     : columns
@@ -23,7 +24,7 @@ const Table = <Row,>({ columns, rows, getRowKey, visibleColumnKeys }: TableProps
   const colSpan = Math.max(visible.length, 1)
 
   return (
-    <table className='main-table sticky-header-table'>
+    <table className={`main-table ${stickyHeader ? 'sticky-header-table' : 'normal-header-table'}`.trim()}>
         <thead>
             <tr>
                 {visible.map((col) => (

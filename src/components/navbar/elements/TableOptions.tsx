@@ -10,7 +10,7 @@ const TableOptions = () => {
   const pinTimerRef = useRef<number | null>(null);
   const hoverKeyRef = useRef<null | 'group' | 'view'>(null);
 
-  const { visibleColumns, toggleColumn } = useTableView();
+  const { visibleColumns, toggleColumn, groupBy, toggleGroupBy } = useTableView();
 
   const [openSubmenu, setOpenSubmenu] = useState<null | 'group' | 'view'>(null);
   const [pinnedSubmenu, setPinnedSubmenu] = useState<null | 'group' | 'view'>(null);
@@ -120,8 +120,26 @@ const TableOptions = () => {
             clearPinTimer();
           }}
         >
-          <div className='options-submenu-item'><IoEllipse className='options-submenu-item-circle'/>Distancia</div>
-          <div className='options-submenu-item'><IoEllipse className='options-submenu-item-circle'/>Categoría</div>
+          <div
+            className={`options-submenu-item ${groupBy === 'distancia' ? 'is-active' : 'is-inactive'}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleGroupBy('distancia');
+            }}
+          >
+            {groupBy === 'distancia' && <IoEllipse className='options-submenu-item-circle' />}
+            <span>Distancia</span>
+          </div>
+          <div
+            className={`options-submenu-item ${groupBy === 'categoria' ? 'is-active' : 'is-inactive'}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleGroupBy('categoria');
+            }}
+          >
+            {groupBy === 'categoria' && <IoEllipse className='options-submenu-item-circle' />}
+            <span>Categoría</span>
+          </div>
         </div>
       </div>
       <div
@@ -152,7 +170,7 @@ const TableOptions = () => {
               toggleColumn('folio');
             }}
           >
-            <IoIosCheckmark className={`options-submenu-check ${visibleColumns.folio ? 'is-visible' : 'is-invisible'}`}/>
+            {visibleColumns.folio && <IoIosCheckmark className='options-submenu-check' />}
             <span>Folio</span>
           </div>
           <div
@@ -162,7 +180,7 @@ const TableOptions = () => {
               toggleColumn('name');
             }}
           >
-            <IoIosCheckmark className={`options-submenu-check ${visibleColumns.name ? 'is-visible' : 'is-invisible'}`}/>
+            {visibleColumns.name && <IoIosCheckmark className='options-submenu-check' />}
             <span>Nombre</span>
           </div>
           <div
@@ -172,7 +190,7 @@ const TableOptions = () => {
               toggleColumn('apellido');
             }}
           >
-            <IoIosCheckmark className={`options-submenu-check ${visibleColumns.apellido ? 'is-visible' : 'is-invisible'}`}/>
+            {visibleColumns.apellido && <IoIosCheckmark className='options-submenu-check' />}
             <span>Apellido</span>
           </div>
           <div
@@ -182,7 +200,7 @@ const TableOptions = () => {
               toggleColumn('distancia');
             }}
           >
-            <IoIosCheckmark className={`options-submenu-check ${visibleColumns.distancia ? 'is-visible' : 'is-invisible'}`}/>
+            {visibleColumns.distancia && <IoIosCheckmark className='options-submenu-check' />}
             <span>Distancia</span>
           </div>
           <div
@@ -192,7 +210,7 @@ const TableOptions = () => {
               toggleColumn('tel');
             }}
           >
-            <IoIosCheckmark className={`options-submenu-check ${visibleColumns.tel ? 'is-visible' : 'is-invisible'}`}/>
+            {visibleColumns.tel && <IoIosCheckmark className='options-submenu-check' />}
             <span>Teléfono</span>
           </div>
           <div
@@ -202,7 +220,7 @@ const TableOptions = () => {
               toggleColumn('categoria');
             }}
           >
-            <IoIosCheckmark className={`options-submenu-check ${visibleColumns.categoria ? 'is-visible' : 'is-invisible'}`}/>
+            {visibleColumns.categoria && <IoIosCheckmark className='options-submenu-check' />}
             <span>Categoría</span>
           </div>
           <div
@@ -212,7 +230,7 @@ const TableOptions = () => {
               toggleColumn('fecha_registro');
             }}
           >
-            <IoIosCheckmark className={`options-submenu-check ${visibleColumns.fecha_registro ? 'is-visible' : 'is-invisible'}`}/>
+            {visibleColumns.fecha_registro && <IoIosCheckmark className='options-submenu-check' />}
             <span>Fecha de registro</span>
           </div>
         </div>

@@ -9,16 +9,22 @@ export type TableColumnKey =
   | 'categoria'
   | 'fecha_registro'
 
+export type TableGroupByKey = 'distancia' | 'categoria'
+
 type VisibleColumns = Record<TableColumnKey, boolean>
 
 type TableViewContextValue = {
   visibleColumns: VisibleColumns
+  groupBy: TableGroupByKey | null
   toggleColumn: (key: TableColumnKey) => void
   setColumn: (key: TableColumnKey, value: boolean) => void
   setAll: (value: boolean) => void
+  toggleGroupBy: (key: TableGroupByKey) => void
+  clearGroupBy: () => void
 }
 
 const STORAGE_KEY = 'tableVisibleColumns'
+const STORAGE_GROUP_BY_KEY = 'tableGroupBy'
 
 const DEFAULT_VISIBLE_COLUMNS: VisibleColumns = {
   folio: true,
@@ -53,10 +59,23 @@ const readStoredVisibleColumns = (): VisibleColumns => {
   }
 }
 
+const readStoredGroupBy = (): TableGroupByKey | null => {
+  try {
+    const raw = localStorage.getItem(STORAGE_GROUP_BY_KEY)
+    if (!raw) return null
+    const parsed: unknown = JSON.parse(raw)
+    if (parsed === 'distancia' || parsed === 'categoria') return parsed
+    return null
+  } catch {
+    return null
+  }
+}
+
 const TableViewContext = createContext<TableViewContextValue | null>(null)
 
 export const TableViewProvider = ({ children }: { children: React.ReactNode }) => {
   const [visibleColumns, setVisibleColumns] = useState<VisibleColumns>(() => readStoredVisibleColumns())
+  const [groupBy, setGroupBy] = useState<TableGroupByKey | null>(() => readStoredGroupBy())
 
   useEffect(() => {
     try {
@@ -65,6 +84,14 @@ export const TableViewProvider = ({ children }: { children: React.ReactNode }) =
       // ignore (storage could be unavailable)
     }
   }, [visibleColumns])
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_GROUP_BY_KEY, JSON.stringify(groupBy))
+    } catch {
+      // ignore (storage could be unavailable)
+    }
+  }, [groupBy])
 
   const toggleColumn = (key: TableColumnKey) => {
     setVisibleColumns((prev) => ({ ...prev, [key]: !prev[key] }))
@@ -86,9 +113,17 @@ export const TableViewProvider = ({ children }: { children: React.ReactNode }) =
     })
   }
 
+  const toggleGroupBy = (key: TableGroupByKey) => {
+    setGroupBy((prev) => (prev === key ? null : key))
+  }
+
+  const clearGroupBy = () => {
+    setGroupBy(null)
+  }
+
   const value = useMemo<TableViewContextValue>(
-    () => ({ visibleColumns, toggleColumn, setColumn, setAll }),
-    [visibleColumns]
+    () => ({ visibleColumns, groupBy, toggleColumn, setColumn, setAll, toggleGroupBy, clearGroupBy }),
+    [visibleColumns, groupBy]
   )
 
   return <TableViewContext.Provider value={value}>{children}</TableViewContext.Provider>

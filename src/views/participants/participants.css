@@ -1,0 +1,13 @@
+.participants-group{
+	margin-bottom: 18px;
+}
+
+.participants-group-title{
+	color: var(--regular-text-color);
+	font-size: var(--caption-text);
+	margin: 12px 0 8px;
+	padding-left: 24px;
+    border-top: 1px solid rgba(var(--secondary-text-color-rgb), 0.3);
+    border-radius: 20px;
+    padding: 10px;
+}
