@@ -45,6 +45,7 @@
     font-size: calc(var(--caption-text) - 1px);
     width: auto;
     min-width: calc(var(--caption-text) + 70px);
+    color: var(--regular-text-color);
     padding: 5px 10px;
     display: flex;
     justify-content: start;
@@ -52,6 +53,22 @@
     white-space: nowrap;
     border-radius: 15px;
     cursor: pointer;
+}
+
+.options-submenu-item.is-inactive{
+    color: var(--secondary-text-color);
+}
+
+.options-submenu-check{
+    flex: 0 0 auto;
+}
+
+.options-submenu-check.is-visible{
+    opacity: 1;
+}  
+
+.options-submenu-check.is-invisible{
+    opacity: 0;
 }
 
 .options-submenu-item:hover{

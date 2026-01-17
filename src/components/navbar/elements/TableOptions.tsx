@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { IoLogoBuffer, IoIosSettings, IoIosCheckmark } from "react-icons/io";
 import { IoEllipse } from "react-icons/io5";
+import { useTableView } from '../../../context/TableViewContext';
 import './tableoptions.css'
 
 const TableOptions = () => {
@@ -8,6 +9,8 @@ const TableOptions = () => {
   const hoverTimerRef = useRef<number | null>(null);
   const pinTimerRef = useRef<number | null>(null);
   const hoverKeyRef = useRef<null | 'group' | 'view'>(null);
+
+  const { visibleColumns, toggleColumn } = useTableView();
 
   const [openSubmenu, setOpenSubmenu] = useState<null | 'group' | 'view'>(null);
   const [pinnedSubmenu, setPinnedSubmenu] = useState<null | 'group' | 'view'>(null);
@@ -142,13 +145,76 @@ const TableOptions = () => {
             clearPinTimer();
           }}
         >
-          <div className='options-submenu-item'><IoIosCheckmark />Folio</div>
-          <div className='options-submenu-item'><IoIosCheckmark />Nombre</div>
-          <div className='options-submenu-item'><IoIosCheckmark />Apellido</div>
-          <div className='options-submenu-item'><IoIosCheckmark />Distancia</div>
-          <div className='options-submenu-item'><IoIosCheckmark />Teléfono</div>
-          <div className='options-submenu-item'><IoIosCheckmark />Categoría</div>
-          <div className='options-submenu-item'><IoIosCheckmark />Fecha de registro</div>
+          <div
+            className={`options-submenu-item ${visibleColumns.folio ? 'is-active' : 'is-inactive'}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleColumn('folio');
+            }}
+          >
+            <IoIosCheckmark className={`options-submenu-check ${visibleColumns.folio ? 'is-visible' : 'is-invisible'}`}/>
+            <span>Folio</span>
+          </div>
+          <div
+            className={`options-submenu-item ${visibleColumns.name ? 'is-active' : 'is-inactive'}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleColumn('name');
+            }}
+          >
+            <IoIosCheckmark className={`options-submenu-check ${visibleColumns.name ? 'is-visible' : 'is-invisible'}`}/>
+            <span>Nombre</span>
+          </div>
+          <div
+            className={`options-submenu-item ${visibleColumns.apellido ? 'is-active' : 'is-inactive'}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleColumn('apellido');
+            }}
+          >
+            <IoIosCheckmark className={`options-submenu-check ${visibleColumns.apellido ? 'is-visible' : 'is-invisible'}`}/>
+            <span>Apellido</span>
+          </div>
+          <div
+            className={`options-submenu-item ${visibleColumns.distancia ? 'is-active' : 'is-inactive'}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleColumn('distancia');
+            }}
+          >
+            <IoIosCheckmark className={`options-submenu-check ${visibleColumns.distancia ? 'is-visible' : 'is-invisible'}`}/>
+            <span>Distancia</span>
+          </div>
+          <div
+            className={`options-submenu-item ${visibleColumns.tel ? 'is-active' : 'is-inactive'}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleColumn('tel');
+            }}
+          >
+            <IoIosCheckmark className={`options-submenu-check ${visibleColumns.tel ? 'is-visible' : 'is-invisible'}`}/>
+            <span>Teléfono</span>
+          </div>
+          <div
+            className={`options-submenu-item ${visibleColumns.categoria ? 'is-active' : 'is-inactive'}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleColumn('categoria');
+            }}
+          >
+            <IoIosCheckmark className={`options-submenu-check ${visibleColumns.categoria ? 'is-visible' : 'is-invisible'}`}/>
+            <span>Categoría</span>
+          </div>
+          <div
+            className={`options-submenu-item ${visibleColumns.fecha_registro ? 'is-active' : 'is-inactive'}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleColumn('fecha_registro');
+            }}
+          >
+            <IoIosCheckmark className={`options-submenu-check ${visibleColumns.fecha_registro ? 'is-visible' : 'is-invisible'}`}/>
+            <span>Fecha de registro</span>
+          </div>
         </div>
       </div>
     </div>
