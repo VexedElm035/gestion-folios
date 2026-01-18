@@ -16,7 +16,7 @@
 
 .running-container{
   position: absolute;
-  top: calc(100% + 8px);
+  /* top: calc(100% + 8px); */
   left: 0;
   z-index: 101;
   color: var(--regular-text-color);
@@ -46,6 +46,8 @@
 .running-container.is-expanded{
   width: auto;
   height: auto;
+  top: calc(100% + 8px);
+  left: unset;
 }
 
 .running-button{
@@ -135,14 +137,28 @@
   }
 
   .running-container{
-    top: auto;
-    bottom: calc(100% + 8px);
+    /* top: unset;
+    bottom: calc(100% + 8px); */
+    /* width: calc(var(--runner-collapsed-width) + 40px);
+    height: calc(var(--runner-collapsed-height) + 10px); */
+  }
+
+  .running-container.is-collapsed.is-mobile{
+    /* width: calc(var(--runner-collapsed-width) + 40px); */
+    height: calc(var(--runner-collapsed-height) + 30px);
+    /* width: calc(var(--runner-collapsed-width) + 60px); */
+  }
+
+  .running-container.is-expanded.is-mobile{
+    top: unset;
+    bottom: calc(100% - 35px);
+    height: calc(var(--runner-collapsed-height) + 450px);
   }
 
   .window-content {
     width: 320px;
     height: 350px;
-    padding: 10px 15px 10px 15px;
+    padding: 0px 15px 10px 15px;
   }
 
   .add-runner-button{
@@ -165,6 +181,16 @@
   }
 
   .running-icon, .plus-icon, .running-text-button{
-    font-size: calc(var(--heading-text)); 
+    font-size: calc(var(--heading-text) - 3px); 
+  }
+
+  .running-icon{
+    left: -5px;
+    top: -1px;
+  }
+
+  .plus-icon{
+    top: -12px;
+    right: -7px;
   }
 }

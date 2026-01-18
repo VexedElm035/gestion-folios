@@ -27,7 +27,7 @@
 @media (max-width: 480px) {
     .runner-section {
         top: unset;
-        bottom: 5px;
+        bottom: 20px;
         right: 24%;
     }
 }
