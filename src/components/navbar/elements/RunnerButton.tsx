@@ -27,6 +27,7 @@ const RunnerButton = () => {
   const formContainerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const runnerIconsRef = useRef<HTMLDivElement>(null);
+  const runnerTextRef = useRef<HTMLSpanElement>(null);
   const runnerCollapseRef = useRef<HTMLDivElement>(null);
   const expandedXRef = useRef(0);
   const collapsedXRef = useRef(0);
@@ -73,9 +74,10 @@ const RunnerButton = () => {
     const formContainer = formContainerRef.current;
     const text = textRef.current;
     const runnerIcons = runnerIconsRef.current;
+    const runnerText = runnerTextRef.current;
     const runnerCollapse = runnerCollapseRef.current;
 
-    if (!container || !formContainer || !text || !runnerIcons || !runnerCollapse) return;
+    if (!container || !formContainer || !text || !runnerIcons || !runnerText || !runnerCollapse) return;
 
     const measureLayout = (expanded: boolean) => {
       container.classList.toggle('is-expanded', expanded);
@@ -109,6 +111,7 @@ const RunnerButton = () => {
       gsap.set(container, { x: expandedXRef.current, y: 0, clearProps: 'width,height' });
       gsap.set(formContainer, { opacity: 1, display: 'flex' });
       gsap.set(runnerIcons, { display: 'none', opacity: 0 });
+      gsap.set(runnerText, { display: 'none', opacity: 0 });
       gsap.set(runnerCollapse, { display: 'flex', opacity: 1 });
     } else {
       container.classList.add('is-collapsed');
@@ -116,6 +119,7 @@ const RunnerButton = () => {
       gsap.set(container, { x: collapsedXRef.current, y: 0, clearProps: 'width,height' });
       gsap.set(formContainer, { opacity: 0, display: 'none' });
       gsap.set(runnerIcons, { display: 'flex', opacity: 1 });
+      gsap.set(runnerText, { display: 'flex', opacity: 1 });
       gsap.set(runnerCollapse, { display: 'none', opacity: 0 });
     }
   }, [isExpanded, isMobileMode]);
@@ -127,9 +131,10 @@ const RunnerButton = () => {
     const formContainer = formContainerRef.current;
     const text = textRef.current;
     const runnerIcons = runnerIconsRef.current;
+    const runnerText = runnerTextRef.current;
     const runnerCollapse = runnerCollapseRef.current;
 
-    if (!container || !formContainer || !text || !runnerIcons || !runnerCollapse) return;
+    if (!container || !formContainer || !text || !runnerIcons || !runnerText || !runnerCollapse) return;
 
     isAnimating.current = true;
 
@@ -140,6 +145,7 @@ const RunnerButton = () => {
       container.classList.remove('is-expanded');
       gsap.set(formContainer, { display: 'none', opacity: 0 });
       gsap.set(runnerIcons, { display: 'flex', opacity: 1 });
+      gsap.set(runnerText, { display: 'flex', opacity: 1 });
       gsap.set(runnerCollapse, { display: 'none', opacity: 0 });
 
       const start = container.getBoundingClientRect();
@@ -168,8 +174,10 @@ const RunnerButton = () => {
       tl.to(text, { opacity: 0, duration: 0.12 })
         .to(text, { flexDirection: 'column', duration: 0 })
         .to(runnerIcons, { opacity: 0, duration: 0.12 }, '<')
-        .set(runnerIcons, { display: 'none' })
+        .set(runnerIcons, { display: 'none', opacity: 0 })
+        .set(runnerText, { display: 'none', opacity: 0 })
         .set(runnerCollapse, { display: 'flex', opacity: 0 })
+        .set(container, {justifyContent: 'flex-start', duration: 0})
         .to(container, { width: end.width, height: end.height, x: endX, duration: 0.25, ease: 'power3.out' })
         .to(formContainer, { opacity: 1, duration: 0.2 }, '-=0.12')
         .to(runnerCollapse, { opacity: 1, duration: 0.15 }, '-=0.18')
@@ -181,6 +189,7 @@ const RunnerButton = () => {
       container.classList.remove('is-collapsed');
       gsap.set(formContainer, { display: 'flex', opacity: 1 });
       gsap.set(runnerIcons, { display: 'none', opacity: 0 });
+      gsap.set(runnerText, { display: 'none', opacity: 0 });
       gsap.set(runnerCollapse, { display: 'flex', opacity: 1 });
 
       const start = container.getBoundingClientRect();
@@ -211,9 +220,11 @@ const RunnerButton = () => {
         .to(runnerCollapse, { opacity: 0, duration: 0.12 }, '<')
         .to(text, { opacity: 0, duration: 0.12 }, '<')
         .to(text, { flexDirection: 'row', duration: 0 })
+        .set(container, {justifyContent: 'center', duration: 0})
         .to(container, { width: end.width, height: end.height, x: endX, duration: 0.2, ease: 'power3.out' })
-        .set(runnerCollapse, { display: 'none' })
+        .set(runnerCollapse, { display: 'none', opacity: 0 })
         .set(runnerIcons, { display: 'flex', opacity: 0 })
+        .set(runnerText, { display: 'flex', opacity: 1 })
         .to(runnerIcons, { opacity: 1, duration: 0.15 })
         .to(text, { opacity: 1, duration: 0.15 }, '<');
     }
@@ -230,7 +241,7 @@ const RunnerButton = () => {
           <div ref={runnerCollapseRef} className='running-icons'>
             <IoIosArrowDown className='arrow-icon'/>
           </div>
-          <span className='runner-button-text'>
+          <span ref={runnerTextRef} className='runner-button-text'>
             Agregar Corredor
           </span>
         </div>

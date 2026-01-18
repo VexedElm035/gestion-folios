@@ -142,6 +142,8 @@
 
     .search-bar-container .input-element{
         width: 50vw;
+        height: 35px;
+        margin: 5px 0;
         /* width: calc(var(--regular-text) + 250px); */
         /* max-width: none; */
     }

@@ -2,7 +2,7 @@
   color: var(--regular-text-color);
   border: 1px solid rgba(var(--secondary-text-color-rgb), 0.35);
   box-sizing: border-box;
-  padding: 0;
+  padding: 0 15px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,9 +26,9 @@
 }
 
 .runner-button-container.is-expanded{
-  width: calc(var(--regular-text) + 325px);
-  height: calc(var(--regular-text) + 380px);
-  justify-content: flex-start;
+  width: calc(var(--runner-collapsed-width) + 110px);
+  height: calc(var(--runner-collapsed-height) + 380px);
+  /* justify-content: flex-start; */
 }
 
 .runner-button-content-container{
@@ -66,9 +66,17 @@
 }
 
 .runner-form-container{
-    width: auto;
+    width: 100%;
     display: none;
     height: auto;
+}
+
+.runner-form-container .runner-fields{
+  gap: 25px;
+  align-items: center;
+  justify-content: start;
+  /* padding: 20px; */
+  margin-top: 30px;
 }
 
 .runner-button-container.is-expanded .runner-form-container{
@@ -91,6 +99,7 @@
 .running-icons{
   position: relative;
   width: 10%;
+  justify-content: center;
   /* inset: 0; */
 }
 
@@ -113,14 +122,35 @@
 }
 
 @media (max-width: 480px) {
+  
+
   .runner-button-container{
     --runner-collapsed-width: calc(var(--heading-text) + 225px);
-    --runner-collapsed-height: calc(var(--heading-text) + 35px);
+    --runner-collapsed-height: calc(var(--heading-text) + 25px);
   }
 
-  .runner-form-container .input-label, .runner-button-text, .runner-form-container .dropdown-label, .runner-form-container .input-element, .runner-form-container .dropdown-element{
+  .runner-button-container.is-expanded{
+  width: calc(var(--runner-collapsed-width) + 110px);
+  height: calc(var(--runner-collapsed-height) + 445px);
+  /* justify-content: flex-start; */
+}
+
+  .runner-form-container .input-label, .add-runner-button, .runner-button-text, .runner-form-container .dropdown-label, .runner-form-container .input-element, .runner-form-container .dropdown-element{
     font-size: var(--heading-text); 
   }
+
+  .runner-form-container .runner-fields{
+  gap: 35px;
+  margin-top: 20px;
+}
+
+
+.add-runner-button{
+  margin-top: 5px;
+  width: calc(var(--heading-text) + 140px);
+  height: calc(var(--heading-text) + 35px);
+}
+
 
   .arrow-icon{
     font-size: calc(var(--heading-text) + 10px); 
