@@ -24,6 +24,7 @@ const Table = <Row,>({ columns, rows, getRowKey, visibleColumnKeys, stickyHeader
   const colSpan = Math.max(visible.length, 1)
 
   return (
+    <div className="table-container">
     <table className={`main-table ${stickyHeader ? 'sticky-header-table' : 'normal-header-table'}`.trim()}>
         <thead>
             <tr>
@@ -49,6 +50,7 @@ const Table = <Row,>({ columns, rows, getRowKey, visibleColumnKeys, stickyHeader
             ))}
         </tbody>
     </table>
+    </div>
   )
 }
 

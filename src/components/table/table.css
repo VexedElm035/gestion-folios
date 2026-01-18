@@ -1,14 +1,19 @@
+.table-container {
+  width: 100%;
+  /* overflow-x: auto; */
+}
+
 .main-table{
   background-color: transparent;
   font-family: var(--font-family);
   width: 100%;
   text-align: left;
   border-collapse: collapse;
-  overflow-y: auto;
 }
 
 .main-table td, .main-table th {
   padding: 3px 2px;
+  /* word-break: break-all; */
 }
 
 .main-table thead th {
@@ -88,10 +93,6 @@
   background: var(--secondary-text-color);
 }
 
-.main-table.normal-header-table thead{
-  
-}
-
 .main-table tfoot {
   font-size: var(--caption-text);
   font-weight: bold;
@@ -114,12 +115,15 @@
 }
 
 @media (max-width: 480px) {
+  .table-container{
+    overflow-x: auto; /* BUG: DEJA DE FUNCIONAR EL HEADER FIJO ARRIBA DE LA TABLA*/
+  }
   .main-table.sticky-header-table thead {
     top: 140px;
   }
 
   .main-table thead th:first-child {
-    padding-left: 4px;
+    padding-left: 0px;
   }
   
   .main-table tr td {
@@ -127,7 +131,7 @@
   }
 
   .main-table tr td:first-child {
-    padding-left: 4px;
+    padding-left: 0px;
   }
 
 

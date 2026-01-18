@@ -26,7 +26,7 @@ const Navbar = () => {
             className={`navbar-item ${location.pathname === item.enlace ? 'active' : ''}`}>
               <a href={item.enlace}>
                 <item.icon className='navbar-item-icon'/>
-                <span>
+                <span className='navbar-item-text'>
                   {item.nombre}
                 </span> 
               </a>

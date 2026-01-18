@@ -132,11 +132,15 @@
 
   .navbar-items{
     height: calc(var(--regular-text) + 35px);
-    
+     border-radius: 15px;
   }
 
   .navbar-item span{
     display: flex;
+  }
+
+  .navbar-item-text{
+    font-size: calc(var(--heading-text) - 6px);
   }
 }
 /* .navbar-item:hover{

@@ -63,6 +63,14 @@
     flex: 0 0 auto;
 }
 
+.options-submenu-item-circle.is-visible{
+    opacity: 1;
+}
+
+.options-submenu-item-circle.is-invisible{
+    opacity: 0;
+}
+
 .options-submenu-check.is-visible{
     opacity: 1;
 }  
