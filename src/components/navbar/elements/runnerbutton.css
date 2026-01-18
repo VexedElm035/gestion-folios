@@ -8,6 +8,7 @@
 }
 
 .runner-container-center {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,22 +16,36 @@
 
 .running-container{
   position: absolute;
-  top: 0;
+  top: calc(100% + 8px);
+  left: 0;
   z-index: 101;
   color: var(--regular-text-color);
   border: 1px solid rgba(var(--secondary-text-color-rgb), 0.35);
+  box-sizing: border-box;
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: var(--caption-text);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  width: calc(var(--regular-text) + 180px);
-  height: calc(var(--regular-text) + 15px);
+  width: auto;
+  height: auto;
   border-radius: 25px;
   gap: 10px;
   flex-direction: column;
   background-color: rgba(var(--background-color-rgb), 0.98);
+  --runner-collapsed-width: calc(var(--regular-text) + 180px);
+  --runner-collapsed-height: calc(var(--regular-text) + 15px);
+}
+
+.running-container.is-collapsed{
+  width: var(--runner-collapsed-width);
+  height: var(--runner-collapsed-height);
+}
+
+.running-container.is-expanded{
+  width: auto;
+  height: auto;
 }
 
 .running-button{
@@ -115,8 +130,13 @@
 }
 
 @media (max-width: 480px) {
-  .running-container{
+  .running-button{
+    height: calc(var(--heading-text) + 25px);
+  }
 
+  .running-container{
+    top: auto;
+    bottom: calc(100% + 8px);
   }
 
   .window-content {

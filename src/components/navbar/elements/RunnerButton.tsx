@@ -10,8 +10,6 @@ import './runnerbutton.css';
 gsap.registerPlugin(useGSAP);
 
 const STORAGE_KEY = 'addRunnerExpanded';
-const COLLAPSED_WIDTH = 'calc(var(--regular-text) + 180px)';
-const COLLAPSED_HEIGHT = 'calc(var(--regular-text) + 15px)';
 
 const readStoredExpanded = (): boolean => {
   try {
@@ -31,14 +29,25 @@ const RunnerButton = () => {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const [isExpanded, setIsExpanded] = useState<boolean>(() => readStoredExpanded());
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const mq = window.matchMedia('(max-width: 480px)');
+    const onChange = () => setIsMobile(mq.matches);
+    onChange();
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  useEffect(() => {
+    // No persistimos el estado en móvil para no sobreescribir la preferencia desktop.
+    if (isMobile) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(isExpanded));
     } catch {
       // ignore (storage could be unavailable)
     }
-  }, [isExpanded]);
+  }, [isExpanded, isMobile]);
 
   useGSAP(() => {
     const text = textRef.current;
@@ -54,17 +63,21 @@ const RunnerButton = () => {
       gsap.set(collapsedIcons, { opacity: 0, display: 'none' });
       gsap.set(expandedIcon, { display: 'flex', opacity: 1 });
       gsap.set(content, { display: 'flex', opacity: 1 });
-      gsap.set(container, { width: 'auto', height: 'auto' });
-      gsap.set(button, { height: 'auto' });
+      container.classList.add('is-expanded');
+      container.classList.remove('is-collapsed');
+      container.classList.toggle('is-mobile', isMobile);
+      gsap.set(container, { clearProps: 'width,height' });
     } else {
       gsap.set(expandedIcon, { opacity: 0, display: 'none' });
       gsap.set(content, { opacity: 0, display: 'none' });
-      gsap.set(container, { width: COLLAPSED_WIDTH, height: COLLAPSED_HEIGHT });
+      container.classList.add('is-collapsed');
+      container.classList.remove('is-expanded');
+      container.classList.toggle('is-mobile', isMobile);
+      gsap.set(container, { clearProps: 'width,height' });
       gsap.set(text, { display: 'flex', opacity: 1 });
       gsap.set(collapsedIcons, { display: 'block', opacity: 1 });
-      gsap.set(button, { height: COLLAPSED_HEIGHT });
     }
-  }, [isExpanded]);
+  }, [isExpanded, isMobile]);
 
   const isAnimating = useRef(false);
 
@@ -82,33 +95,57 @@ const RunnerButton = () => {
     isAnimating.current = true;
     
     if (!isExpanded) {
+      const start = container.getBoundingClientRect();
+
       const tl = gsap.timeline({
         onComplete: () => {
           isAnimating.current = false;
           setIsExpanded(true);
+          gsap.set(container, { clearProps: 'width,height' });
         }
       });
       tl.to([text, collapsedIcons], { opacity: 0, duration: 0.2 })
         .set([text, collapsedIcons], { display: 'none' })
         .set(expandedIcon, { display: 'flex', opacity: 0 })
-        .set(button, { height: 'auto'})
         .set(content, { display: 'flex', opacity: 0 })
-        .to(container, { width: 'auto', height: 'auto', duration: 0.3 })
+
+        // Aplica layout expandido (CSS) y anima a su tamaño final medido.
+        .add(() => {
+          container.classList.add('is-expanded');
+          container.classList.remove('is-collapsed');
+          gsap.set(container, { width: start.width, height: start.height });
+          gsap.set(container, { clearProps: 'width,height' });
+          const end = container.getBoundingClientRect();
+          gsap.set(container, { width: start.width, height: start.height });
+          gsap.to(container, { width: end.width, height: end.height, duration: 0.3, ease: 'power3.out' });
+        })
         .to(expandedIcon, { opacity: 1, duration: 0.2 }, "-=0.05")
         .to(content, { opacity: 1, duration: 0.2 }, "-=0.3");
     }
     else {
+      const start = container.getBoundingClientRect();
+
       const tl = gsap.timeline({
         onComplete: () => {
           isAnimating.current = false;
           setIsExpanded(false);
+          gsap.set(container, { clearProps: 'width,height' });
         }
       });
       tl.to([content, expandedIcon], { opacity: 0, duration: 0.2 })
-        .to(container, { width: COLLAPSED_WIDTH, height: COLLAPSED_HEIGHT, duration: 0.12 }, "-=0.05")
+
+        // Aplica layout colapsado (CSS) y anima a su tamaño final medido.
+        .add(() => {
+          container.classList.add('is-collapsed');
+          container.classList.remove('is-expanded');
+          gsap.set(container, { width: start.width, height: start.height });
+          gsap.set(container, { clearProps: 'width,height' });
+          const end = container.getBoundingClientRect();
+          gsap.set(container, { width: start.width, height: start.height });
+          gsap.to(container, { width: end.width, height: end.height, duration: 0.12, ease: 'power3.out' });
+        }, "-=0.05")
         .set(content, { display: 'none' })
         .set(expandedIcon, { display: 'none' })
-        .set(button, { height: COLLAPSED_HEIGHT })
         .set([text, collapsedIcons], { display: 'flex', opacity: 0 })
         .set(collapsedIcons, { display: 'block' })
         .to([text, collapsedIcons], { opacity: 1, duration: 0.2 });
@@ -140,7 +177,7 @@ const RunnerButton = () => {
         </div>
       </button>
 
-    <div ref={containerRef} className={`running-container`}>
+    <div ref={containerRef} className={`running-container ${isExpanded ? 'is-expanded' : 'is-collapsed'} ${isMobile ? 'is-mobile' : ''}`.trim()}>
       <div ref={contentRef} id="add-runner-panel" className="window-content">
         <Form />
       </div>
