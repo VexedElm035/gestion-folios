@@ -3,7 +3,6 @@ import { IoMdPerson } from "react-icons/io";
 import { IoMdStopwatch } from "react-icons/io";
 import { IoMdSettings } from "react-icons/io";
 import Options from '../options/Options';
-import RunnerButton from './elements/RunnerButton';
 import SearchBar from './elements/SearchBar';
 import './navbar.css';
 
@@ -37,9 +36,9 @@ const Navbar = () => {
       <div className='secondary-section'>
 
 
-        <section className='runner-section'>
+        {/* <section className='runner-section'>
           <RunnerButton />
-        </section>
+        </section> */}
         
         <section className='options-section'>
             <SearchBar />

@@ -116,7 +116,7 @@
 
 @media (max-width: 480px) {
   .running-container{
-    right: -110px;
+
   }
 
   .window-content {
@@ -142,5 +142,9 @@
 
   .arrow-icon{
     font-size: calc(var(--heading-text) + 130px); 
+  }
+
+  .running-icon, .plus-icon, .running-text-button{
+    font-size: calc(var(--heading-text)); 
   }
 }

@@ -20,7 +20,7 @@
   flex-direction: row;
   align-items: center;
   /* justify-content: space-between; */
-  gap: 5px;
+  /* gap: 5px; */
 }
 
 .navigation-section {
@@ -36,15 +36,15 @@
   width: 65%;
 }
 
-.runner-section {
+/* .runner-section {
   width: 35%;
   display: flex;
   align-items: center;
   justify-content: center;
-}
+} */
 
 .options-section {
-  width: 32%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -123,11 +123,18 @@
     /* flex-direction: column; */
     margin-top: 15px;
     width: 100%;
+    justify-content: flex-end;
   }
 
-  .runner-section {
+  /* .runner-section {
     position: absolute;
     bottom: -400px;
+  } */
+
+  .options-section{
+    width: 100%;
+    gap: 20px;
+    justify-content: center;
   }
 
   .navbar-items{

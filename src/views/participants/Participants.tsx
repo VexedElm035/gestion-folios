@@ -5,6 +5,7 @@ import { useMemo } from 'react';
 import type { ReactNode } from 'react';
 import { useTableView, type TableColumnKey } from '../../context/TableViewContext';
 import { groupBy as groupByUtil } from '../../utils/groupBy';
+import RunnerButton from "../../components/navbar/elements/RunnerButton";
 
 type Person = {
   folio: string
@@ -100,6 +101,11 @@ const Participants = () => {
             ))}
           </>
         )}
+          
+        <div className="runner-section">
+          <RunnerButton />
+        </div>
+        
     </div>
   )
 }

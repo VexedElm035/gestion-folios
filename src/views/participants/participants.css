@@ -11,3 +11,23 @@
     border-radius: 20px;
     padding: 10px;
 }
+
+.runner-section {
+    position: fixed;
+    top: 20px;
+    right: 43%;
+    
+    z-index: 1001;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 480px) {
+    .runner-section {
+        top: unset;
+        bottom: 5px;
+        right: 24%;
+    }
+}
