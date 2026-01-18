@@ -14,175 +14,231 @@ const STORAGE_KEY = 'addRunnerExpanded';
 const readStoredExpanded = (): boolean => {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? JSON.parse(saved) === true : false;
+    if (!saved) return false;
+    const parsed = JSON.parse(saved);
+    return parsed === true;
   } catch {
     return false;
   }
 };
 
 const RunnerButton = () => {
-  const textRef = useRef<HTMLDivElement>(null);
-  const collapsedIconsRef = useRef<HTMLDivElement>(null);
-  const expandedIconRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const formContainerRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const runnerIconsRef = useRef<HTMLDivElement>(null);
+  const runnerCollapseRef = useRef<HTMLDivElement>(null);
+  const expandedXRef = useRef(0);
+  const collapsedXRef = useRef(0);
+  const anchorCenterXRef = useRef<number | null>(null);
+  const isAnimating = useRef(false);
 
   const [isExpanded, setIsExpanded] = useState<boolean>(() => readStoredExpanded());
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobileMode, setIsMobileMode] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(max-width: 480px)').matches;
+  });
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 480px)');
-    const onChange = () => setIsMobile(mq.matches);
-    onChange();
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
+    const handleChange = (e: MediaQueryListEvent) => setIsMobileMode(e.matches);
+
+    const mqAny = mq as unknown as {
+      addEventListener?: (type: string, listener: (e: MediaQueryListEvent) => void) => void;
+      removeEventListener?: (type: string, listener: (e: MediaQueryListEvent) => void) => void;
+      addListener?: (listener: (e: MediaQueryListEvent) => void) => void;
+      removeListener?: (listener: (e: MediaQueryListEvent) => void) => void;
+    };
+
+    if (typeof mqAny.addEventListener === 'function') {
+      mqAny.addEventListener('change', handleChange);
+      return () => mqAny.removeEventListener?.('change', handleChange);
+    }
+
+    // Fallback para navegadores viejos
+    mqAny.addListener?.(handleChange);
+    return () => mqAny.removeListener?.(handleChange);
   }, []);
 
   useEffect(() => {
-    // No persistimos el estado en móvil para no sobreescribir la preferencia desktop.
-    if (isMobile) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(isExpanded));
     } catch {
       // ignore (storage could be unavailable)
     }
-  }, [isExpanded, isMobile]);
+  }, [isExpanded]);
 
   useGSAP(() => {
-    const text = textRef.current;
-    const collapsedIcons = collapsedIconsRef.current;
-    const expandedIcon = expandedIconRef.current;
-    const content = contentRef.current;
     const container = containerRef.current;
-    const button = buttonRef.current;
-    if (!text || !collapsedIcons || !expandedIcon || !content || !container || !button) return;
+    const formContainer = formContainerRef.current;
+    const text = textRef.current;
+    const runnerIcons = runnerIconsRef.current;
+    const runnerCollapse = runnerCollapseRef.current;
 
+    if (!container || !formContainer || !text || !runnerIcons || !runnerCollapse) return;
+
+    const measureLayout = (expanded: boolean) => {
+      container.classList.toggle('is-expanded', expanded);
+      container.classList.toggle('is-collapsed', !expanded);
+      container.classList.toggle('is-mobile', isMobileMode);
+
+      gsap.set(container, { x: 0, y: 0, clearProps: 'width,height' });
+      gsap.set(formContainer, { display: expanded ? 'flex' : 'none', opacity: expanded ? 1 : 0 });
+
+      const rect = container.getBoundingClientRect();
+      return { rect, centerX: rect.left + rect.width / 2 };
+    };
+
+    // Fijamos un “centro ancla” (el centro del layout colapsado) para que
+    // tanto expandido como colapsado puedan mantenerse centrados aunque el
+    // layout del navbar los empuje hacia un lado.
+    if (anchorCenterXRef.current === null) {
+      anchorCenterXRef.current = measureLayout(false).centerX;
+    }
+
+    const anchor = anchorCenterXRef.current;
+    const collapsed = measureLayout(false);
+    collapsedXRef.current = anchor - collapsed.centerX;
+    const expanded = measureLayout(true);
+    expandedXRef.current = anchor - expanded.centerX;
+
+    // Aplica el estado actual sin animación.
     if (isExpanded) {
-      gsap.set(text, { opacity: 0, display: 'none' });
-      gsap.set(collapsedIcons, { opacity: 0, display: 'none' });
-      gsap.set(expandedIcon, { display: 'flex', opacity: 1 });
-      gsap.set(content, { display: 'flex', opacity: 1 });
       container.classList.add('is-expanded');
       container.classList.remove('is-collapsed');
-      container.classList.toggle('is-mobile', isMobile);
-      gsap.set(container, { clearProps: 'width,height' });
+      gsap.set(container, { x: expandedXRef.current, y: 0, clearProps: 'width,height' });
+      gsap.set(formContainer, { opacity: 1, display: 'flex' });
+      gsap.set(runnerIcons, { display: 'none', opacity: 0 });
+      gsap.set(runnerCollapse, { display: 'flex', opacity: 1 });
     } else {
-      gsap.set(expandedIcon, { opacity: 0, display: 'none' });
-      gsap.set(content, { opacity: 0, display: 'none' });
       container.classList.add('is-collapsed');
       container.classList.remove('is-expanded');
-      container.classList.toggle('is-mobile', isMobile);
-      gsap.set(container, { clearProps: 'width,height' });
-      gsap.set(text, { display: 'flex', opacity: 1 });
-      gsap.set(collapsedIcons, { display: 'block', opacity: 1 });
+      gsap.set(container, { x: collapsedXRef.current, y: 0, clearProps: 'width,height' });
+      gsap.set(formContainer, { opacity: 0, display: 'none' });
+      gsap.set(runnerIcons, { display: 'flex', opacity: 1 });
+      gsap.set(runnerCollapse, { display: 'none', opacity: 0 });
     }
-  }, [isExpanded, isMobile]);
-
-  const isAnimating = useRef(false);
+  }, [isExpanded, isMobileMode]);
 
   const handleToggle = () => {
     if (isAnimating.current) return;
 
-    const text = textRef.current;
-    const collapsedIcons = collapsedIconsRef.current;
-    const expandedIcon = expandedIconRef.current;
-    const content = contentRef.current;
     const container = containerRef.current;
-    const button = buttonRef.current;
-    
-    if (!text || !collapsedIcons || !expandedIcon || !content || !container || !button) return;
+    const formContainer = formContainerRef.current;
+    const text = textRef.current;
+    const runnerIcons = runnerIconsRef.current;
+    const runnerCollapse = runnerCollapseRef.current;
+
+    if (!container || !formContainer || !text || !runnerIcons || !runnerCollapse) return;
+
     isAnimating.current = true;
-    
+
     if (!isExpanded) {
+      // Estado inicial (colapsado)
+      gsap.set(container, { x: collapsedXRef.current, y: 0, clearProps: 'width,height' });
+      container.classList.add('is-collapsed');
+      container.classList.remove('is-expanded');
+      gsap.set(formContainer, { display: 'none', opacity: 0 });
+      gsap.set(runnerIcons, { display: 'flex', opacity: 1 });
+      gsap.set(runnerCollapse, { display: 'none', opacity: 0 });
+
       const start = container.getBoundingClientRect();
+
+      // Aplica layout expandido (CSS) y mide el tamaño final (sin locks)
+      container.classList.add('is-expanded');
+      container.classList.remove('is-collapsed');
+      gsap.set(formContainer, { display: 'flex', opacity: 0 });
+
+      // Medimos el final con x=0 para evitar que el transform afecte el cálculo.
+      gsap.set(container, { x: 0, clearProps: 'width,height' });
+      const end = container.getBoundingClientRect();
+      const endX = expandedXRef.current;
+
+      // Volvemos al inicio para animar.
+      gsap.set(container, { width: start.width, height: start.height, x: collapsedXRef.current });
 
       const tl = gsap.timeline({
         onComplete: () => {
-          isAnimating.current = false;
           setIsExpanded(true);
-          gsap.set(container, { clearProps: 'width,height' });
+          isAnimating.current = false;
+          gsap.set(container, { clearProps: 'width,height', x: endX });
         }
       });
-      tl.to([text, collapsedIcons], { opacity: 0, duration: 0.2 })
-        .set([text, collapsedIcons], { display: 'none' })
-        .set(expandedIcon, { display: 'flex', opacity: 0 })
-        .set(content, { display: 'flex', opacity: 0 })
 
-        // Aplica layout expandido (CSS) y anima a su tamaño final medido.
-        .add(() => {
-          container.classList.add('is-expanded');
-          container.classList.remove('is-collapsed');
-          gsap.set(container, { width: start.width, height: start.height });
-          gsap.set(container, { clearProps: 'width,height' });
-          const end = container.getBoundingClientRect();
-          gsap.set(container, { width: start.width, height: start.height });
-          gsap.to(container, { width: end.width, height: end.height, duration: 0.3, ease: 'power3.out' });
-        })
-        .to(expandedIcon, { opacity: 1, duration: 0.2 }, "-=0.05")
-        .to(content, { opacity: 1, duration: 0.2 }, "-=0.3");
-    }
-    else {
+      tl.to(text, { opacity: 0, duration: 0.12 })
+        .to(text, { flexDirection: 'column', duration: 0 })
+        .to(runnerIcons, { opacity: 0, duration: 0.12 }, '<')
+        .set(runnerIcons, { display: 'none' })
+        .set(runnerCollapse, { display: 'flex', opacity: 0 })
+        .to(container, { width: end.width, height: end.height, x: endX, duration: 0.25, ease: 'power3.out' })
+        .to(formContainer, { opacity: 1, duration: 0.2 }, '-=0.12')
+        .to(runnerCollapse, { opacity: 1, duration: 0.15 }, '-=0.18')
+        .to(text, { opacity: 1, duration: 0.15 }, '-=0.18');
+    } else {
+      // Estado inicial (expandido)
+      gsap.set(container, { x: expandedXRef.current, y: 0, clearProps: 'width,height' });
+      container.classList.add('is-expanded');
+      container.classList.remove('is-collapsed');
+      gsap.set(formContainer, { display: 'flex', opacity: 1 });
+      gsap.set(runnerIcons, { display: 'none', opacity: 0 });
+      gsap.set(runnerCollapse, { display: 'flex', opacity: 1 });
+
       const start = container.getBoundingClientRect();
+
+      // Aplica layout colapsado (CSS) y mide el tamaño final.
+      container.classList.add('is-collapsed');
+      container.classList.remove('is-expanded');
+      gsap.set(formContainer, { display: 'none', opacity: 0 });
+
+      gsap.set(container, { x: 0, clearProps: 'width,height' });
+      const end = container.getBoundingClientRect();
+      const endX = collapsedXRef.current;
+
+      // Volvemos al inicio para animar.
+      gsap.set(container, { width: start.width, height: start.height, x: expandedXRef.current });
+      gsap.set(formContainer, { display: 'flex', opacity: 1 });
 
       const tl = gsap.timeline({
         onComplete: () => {
-          isAnimating.current = false;
           setIsExpanded(false);
-          gsap.set(container, { clearProps: 'width,height' });
+          isAnimating.current = false;
+          gsap.set(container, { clearProps: 'width,height', x: endX });
+          gsap.set(formContainer, { display: 'none', opacity: 0 });
         }
       });
-      tl.to([content, expandedIcon], { opacity: 0, duration: 0.2 })
 
-        // Aplica layout colapsado (CSS) y anima a su tamaño final medido.
-        .add(() => {
-          container.classList.add('is-collapsed');
-          container.classList.remove('is-expanded');
-          gsap.set(container, { width: start.width, height: start.height });
-          gsap.set(container, { clearProps: 'width,height' });
-          const end = container.getBoundingClientRect();
-          gsap.set(container, { width: start.width, height: start.height });
-          gsap.to(container, { width: end.width, height: end.height, duration: 0.12, ease: 'power3.out' });
-        }, "-=0.05")
-        .set(content, { display: 'none' })
-        .set(expandedIcon, { display: 'none' })
-        .set([text, collapsedIcons], { display: 'flex', opacity: 0 })
-        .set(collapsedIcons, { display: 'block' })
-        .to([text, collapsedIcons], { opacity: 1, duration: 0.2 });
+      tl.to(formContainer, { opacity: 0, duration: 0.18 })
+        .to(runnerCollapse, { opacity: 0, duration: 0.12 }, '<')
+        .to(text, { opacity: 0, duration: 0.12 }, '<')
+        .to(text, { flexDirection: 'row', duration: 0 })
+        .to(container, { width: end.width, height: end.height, x: endX, duration: 0.2, ease: 'power3.out' })
+        .set(runnerCollapse, { display: 'none' })
+        .set(runnerIcons, { display: 'flex', opacity: 0 })
+        .to(runnerIcons, { opacity: 1, duration: 0.15 })
+        .to(text, { opacity: 1, duration: 0.15 }, '<');
     }
   };
 
   return (
-    <div className='runner-wrapper'>
-      <div className='runner-container-center'>
-      <button
-      ref={buttonRef}
-        type="button"
-        onClick={handleToggle}
-        className={`running-button ${isExpanded ? 'is-expanded' : ''}`}
-        aria-expanded={isExpanded}
-        aria-controls="add-runner-panel"
-      >
-        <div className='running-icons-container'>
-          <div ref={collapsedIconsRef} className='running-icons running-icons-collapsed'>
+    <div ref={containerRef} className='runner-button-container'>
+      <div onClick={handleToggle} className='runner-button-content-container'>
+        <div ref={textRef} className={`runner-button-content ${isExpanded ? 'is-expanded' : 'is-collapsed'}`}>
+          <div ref={runnerIconsRef} className='running-icons'>
             <PiPersonSimpleRun className='running-icon' />
             <GoPlus className='plus-icon' />
           </div>
-          <div ref={expandedIconRef} className='running-icons running-icons-expanded'>
-            <IoIosArrowDown className='arrow-icon' />
+          <div ref={runnerCollapseRef} className='running-icons'>
+            <IoIosArrowDown className='arrow-icon'/>
           </div>
+          <span className='runner-button-text'>
+            Agregar Corredor
+          </span>
         </div>
-        <div ref={textRef} className="running-label">
-          <span className='running-text-button'>Agregar Corredor</span>
-        </div>
-      </button>
-
-    <div ref={containerRef} className={`running-container ${isExpanded ? 'is-expanded' : 'is-collapsed'} ${isMobile ? 'is-mobile' : ''}`.trim()}>
-      <div ref={contentRef} id="add-runner-panel" className="window-content">
+      </div>
+      <div ref={formContainerRef} className="runner-form-container">
         <Form />
       </div>
-    </div>
-      </div>
+
     </div>
   )
 }
