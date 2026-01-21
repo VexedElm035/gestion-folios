@@ -1,5 +1,5 @@
 import { MdDarkMode, MdLightMode } from 'react-icons/md';
-import { useTheme } from '../../../context/ThemeContext';
+import { useTheme } from '@/context/ThemeContext';
 import { IoMdDesktop } from "react-icons/io";
 import './themeswitch.css';
 

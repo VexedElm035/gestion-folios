@@ -1,7 +1,5 @@
 import { useLocation } from 'react-router-dom'
-import { IoMdPerson } from "react-icons/io";
-import { IoMdStopwatch } from "react-icons/io";
-import { IoMdSettings } from "react-icons/io";
+import { IoMdPerson, IoMdStopwatch, IoMdSettings } from "react-icons/io";
 import Options from '../options/Options';
 import SearchBar from './elements/SearchBar';
 import './navbar.css';

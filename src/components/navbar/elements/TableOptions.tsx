@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { IoLogoBuffer, IoIosSettings, IoIosCheckmark } from "react-icons/io";
 import { IoEllipse } from "react-icons/io5";
-import { useTableView } from '../../../context/TableViewContext';
+import { useTableView } from '@/context/TableViewContext';
 import './tableoptions.css'
 
 const TableOptions = () => {

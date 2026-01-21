@@ -1,11 +1,8 @@
-import { Table } from "../../components";
+import { useMemo, type ReactNode } from 'react';
+import { useTableView, type TableColumnKey } from '@/context/TableViewContext';
+import { Table, RunnerButton } from "@/components";
+import { groupBy as groupByUtil } from '@/utils/groupBy';
 import './participants.css';
-
-import { useMemo } from 'react';
-import type { ReactNode } from 'react';
-import { useTableView, type TableColumnKey } from '../../context/TableViewContext';
-import { groupBy as groupByUtil } from '../../utils/groupBy';
-import RunnerButton from "../../components/navbar/elements/RunnerButton";
 
 type Person = {
   folio: string

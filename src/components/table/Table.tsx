@@ -1,6 +1,5 @@
-import './table.css';
-
 import type { Key, ReactNode } from 'react';
+import './table.css';
 
 export type TableColumn<Row> = {
   key: string
