@@ -1,194 +1,90 @@
-import { useMemo, useState } from 'react'
+import { forwardRef, useImperativeHandle } from 'react'
 import Button from '@/components/button/Button'
-import type { SignupData, SignupLocks } from '../signupTypes'
-import Input from '@/components/form/input/Input';
+import type { CurpState, PhoneAuthState, SignupData, SignupLocks, SignupMethod } from '../signupTypes'
+import CurpMethod from './substeps/CurpMethod';
+import TelMethod from './substeps/TelMethod';
 
-const calculateAgeFromDDMMYYYY = (dateStr: string): number | null => {
-  const match = dateStr.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-  if (!match) return null;
-  const day = Number(match[1]);
-  const month = Number(match[2]);
-  const year = Number(match[3]);
-  if (!day || !month || !year) return null;
-
-  const birth = new Date(year, month - 1, day);
-  if (Number.isNaN(birth.getTime())) return null;
-
-  const now = new Date();
-  let age = now.getFullYear() - birth.getFullYear();
-  const hasHadBirthdayThisYear =
-    now.getMonth() > birth.getMonth() ||
-    (now.getMonth() === birth.getMonth() && now.getDate() >= birth.getDate());
-  if (!hasHadBirthdayThisYear) age -= 1;
-  return Math.max(0, age);
+export type SignUpMethodHandle = {
+  handleBack: () => boolean;
 };
 
-const mapCurpSexoToFormSexo = (sexo: string): SignupData['sexo'] => {
-  // CURP suele usar H (hombre) / M (mujer)
-  if (sexo === 'H') return 'M';
-  if (sexo === 'M') return 'F';
-  return '';
-};
-
-const CURP_MOCK: Record<string, {
-  nombre: string;
-  segundoNombre?: string;
-  apellidoPaterno: string;
-  apellidoMaterno: string;
-  fechaNacimiento: string;
-  sexo: 'H' | 'M';
-  entidadNacimiento: string;
-}> = {
-  RAHL031224HCSZRSA7: {
-    nombre: 'Luis',
-    segundoNombre: 'Daniel',
-    apellidoPaterno: 'Del Razo',
-    apellidoMaterno: 'Hernandez',
-    fechaNacimiento: '24/12/2003',
-    sexo: 'H',
-    entidadNacimiento: 'CS',
-  },
-  RAHL031224MCSZRSA8: {
-    nombre: 'Maria',
-    segundoNombre: 'Fernanda',
-    apellidoPaterno: 'Lopez',
-    apellidoMaterno: 'Gomez',
-    fechaNacimiento: '24/12/2003',
-    sexo: 'M',
-    entidadNacimiento: 'CS',
-  },
-};
 
 type SignUpMethodProps = {
   onNext: () => void;
   onPrefill: (patch: Partial<SignupData>) => void;
   onLock: (patch: Partial<SignupLocks>) => void;
+
+  methodView: SignupMethod;
+  onSelectMethod: (next: Exclude<SignupMethod, null>) => void;
+  onBackToSelector: () => void;
+
+  curpState: CurpState;
+  onCurpStateChange: (patch: Partial<CurpState>) => void;
+
+  phoneAuth: PhoneAuthState;
+  onPhoneAuthChange: (patch: Partial<PhoneAuthState>) => void;
+  onTelefonoInvalidated: () => void;
 };
 
-const SignUpMethod = ({ onNext, onPrefill, onLock }: SignUpMethodProps) => {
-  const [method, setMethod] = useState<'curp' | 'telefono' | null>(null);
-  const [error, setError] = useState<string | null>(null);
+const SignUpMethod = forwardRef<SignUpMethodHandle, SignUpMethodProps>(({ onNext, onPrefill, onLock, methodView, onSelectMethod, onBackToSelector, curpState, onCurpStateChange, phoneAuth, onPhoneAuthChange, onTelefonoInvalidated }, ref) => {
+  const reset = () => onBackToSelector();
 
-  // Telefono substeps
-  const [telStep, setTelStep] = useState<'phone' | 'code'>('phone');
-  const [telefono, setTelefono] = useState('');
-  const [code, setCode] = useState('');
+  useImperativeHandle(ref, () => ({
+    handleBack: () => {
+      if (methodView === 'telefono') {
+        // Si está en el substep del código, back regresa a phone.
+        if (phoneAuth.step === 'code') {
+          onPhoneAuthChange({ step: 'phone', code: '' });
+          return true;
+        }
+        // Si está en teléfono (phone/verified), vuelve al selector
+        onBackToSelector();
+        return true;
+      }
 
-  // CURP input
-  const [curp, setCurp] = useState('');
+      if (methodView === 'curp') {
+        onBackToSelector();
+        return true;
+      }
 
-  const curpDb = useMemo(() => CURP_MOCK, []);
-
-  const reset = () => {
-    setError(null);
-    setMethod(null);
-    setTelStep('phone');
-    setTelefono('');
-    setCode('');
-    setCurp('');
-  };
-
-  const continueWithCurp = () => {
-    setError(null);
-    const key = curp.trim().toUpperCase();
-    if (!key) {
-      setError('Ingresa tu CURP.');
-      return;
-    }
-
-    const record = curpDb[key];
-    if (!record) {
-      setError('CURP no encontrada (demo).');
-      return;
-    }
-
-    const nombre = [record.nombre, record.segundoNombre].filter(Boolean).join(' ');
-    const apellido = [record.apellidoPaterno, record.apellidoMaterno].filter(Boolean).join(' ');
-    const edad = calculateAgeFromDDMMYYYY(record.fechaNacimiento);
-
-    onPrefill({
-      nombre,
-      apellido,
-      sexo: mapCurpSexoToFormSexo(record.sexo),
-      edad: edad === null ? '' : String(edad),
-    });
-
-    // CURP: no bloquea campos
-    onLock({ telefono: false });
-
-    onNext();
-  };
-
-  const send2faCode = () => {
-    setError(null);
-    const digits = telefono.replace(/\D/g, '');
-    if (digits.length !== 10) {
-      setError('El teléfono debe tener 10 dígitos.');
-      return;
-    }
-    setTelefono(digits);
-    setTelStep('code');
-  };
-
-  const verify2faCode = () => {
-    setError(null);
-    if (!code.trim()) {
-      setError('Ingresa el código.');
-      return;
-    }
-
-    // Demo: cualquier código es válido (puedes cambiarlo a == '1234')
-    onPrefill({ telefono });
-    onLock({ telefono: true });
-    onNext();
-  };
+      return false;
+    },
+  }), [methodView, onBackToSelector, onPhoneAuthChange, phoneAuth.step]);
 
   return (
     <div>
-      {!method && (
+      {!methodView && (
         <>
           <h2>Selecciona tu método de registro</h2>
-          <Button onClick={() => setMethod('curp')}>curp</Button>
-          <Button onClick={() => setMethod('telefono')}>telefono</Button>
+          <Button onClick={() => onSelectMethod('curp')}>curp</Button>
+          <Button onClick={() => onSelectMethod('telefono')}>telefono</Button>
         </>
       )}
 
-      {method === 'curp' && (
-        <div>
-          <h3>CURP</h3>
-          <Input id="curp" label="Ingresa tu curp" type="text" value={curp} onChange={(e) => setCurp(e.target.value)} maxLength={18} />
-          {error && <p>{error}</p>}
-          <Button onClick={reset}>Cancelar</Button>
-          <Button onClick={continueWithCurp}>Continuar</Button>
-        </div>
+      {methodView === 'curp' && (
+        <CurpMethod
+          onNext={onNext}
+          onCancel={reset}
+          onPrefill={onPrefill}
+          onLock={onLock}
+          curp={curpState.curp}
+          onCurpChange={(curp) => onCurpStateChange({ curp })}
+        />
       )}
 
-      {method === 'telefono' && (
-        <div>
-          <h3>Teléfono</h3>
-          {telStep === 'phone' && (
-            <>
-              <Input id="telefono" label="Ingresa tu número de teléfono" type="tel" value={telefono} onChange={(e) => setTelefono(e.target.value)} maxLength={10} />
-              {error && <p>{error}</p>}
-              <Button onClick={reset}>Cancelar</Button>
-              <Button onClick={send2faCode}>Enviar código</Button>
-            </>
-          )}
-
-          {telStep === 'code' && (
-            <>
-              <p>Te enviamos un código al {telefono}</p>
-              <Input id="2faCode" label="Código" type="text" value={code} onChange={(e) => setCode(e.target.value)} />
-              {error && <p>{error}</p>}
-              <Button onClick={() => setTelStep('phone')}>Cambiar teléfono</Button>
-              <Button onClick={reset}>Cancelar</Button>
-              <Button onClick={verify2faCode}>Verificar y continuar</Button>
-            </>
-          )}
-        </div>
+      {methodView === 'telefono' && (
+        <TelMethod
+          onNext={onNext}
+          onCancel={reset}
+          onPrefill={onPrefill}
+          onLock={onLock}
+          state={phoneAuth}
+          onStateChange={onPhoneAuthChange}
+          onTelefonoInvalidated={onTelefonoInvalidated}
+        />
       )}
     </div>
   )
-}
+})
 
 export default SignUpMethod
