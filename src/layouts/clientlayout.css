@@ -4,12 +4,13 @@
 }
 
 .main-content {
-  padding-top: 75px; /* Altura del navbar fijo + margen */
-  padding-left: 5%;
-  padding-right: 5%;
+  padding-top: 20px; /* Altura del navbar fijo + margen */
+  padding-left: 3%;
+  padding-right: 3%;
   padding-bottom: 20px;
   width: 100%;
   box-sizing: border-box;
+  height: 90vh;
 }
 
 /* Para responsive futuro */

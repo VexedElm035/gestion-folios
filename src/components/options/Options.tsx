@@ -21,6 +21,7 @@ const readStoredExpanded = (): boolean => {
 };
 
 const Options = () => {
+  const isAdminSubdomain = window.location.hostname.startsWith('admin.');
   const location = useLocation();
   const optionsMenuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -153,7 +154,7 @@ const Options = () => {
               <ThemeSwitch />
             </div>
 
-            {location.pathname === '/' && <TableOptions />}
+            {isAdminSubdomain && location.pathname === '/' && <TableOptions />}
           </div>
         
     </div>

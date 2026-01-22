@@ -1,0 +1,23 @@
+.signup-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  /* align-items: center; */
+}
+
+.signup-top-container{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.signup-main-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-bottom-container{
+  display: flex;
+  justify-content: space-evenly;
+}
