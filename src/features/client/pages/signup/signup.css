@@ -3,21 +3,26 @@
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+  width: 100%;
   /* align-items: center; */
 }
 
 .signup-top-container{
   display: flex;
   justify-content: flex-end;
+  height: 15%;
 }
 
 .signup-main-container{
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 70%;
+  width: 100%;
 }
 
 .signup-bottom-container{
   display: flex;
   justify-content: space-evenly;
+  height: 15%;
 }

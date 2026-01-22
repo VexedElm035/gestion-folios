@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Button from '@/components/button/Button'
 import Input from '@/components/form/input/Input';
 import type { SignupData, SignupLocks } from '../../signupTypes';
+import './curpmethod.css';
 
 
 const CURP_MOCK: Record<string, {
@@ -106,8 +107,8 @@ const CurpMethod = ({ onNext, onCancel, onPrefill, onLock, curp, onCurpChange }:
   };
 
   return (
-     <div>
-          <h3>CURP</h3>
+     <div className='signup-curp-method-container'>
+          <h3>Registro con CURP</h3>
           <Input
             id="curp"
             label="Ingresa tu curp"
@@ -117,8 +118,10 @@ const CurpMethod = ({ onNext, onCancel, onPrefill, onLock, curp, onCurpChange }:
             maxLength={18}
           />
           {error && <p>{error}</p>}
-          <Button onClick={onCancel}>Cancelar</Button>
-          <Button onClick={continueWithCurp}>Continuar</Button>
+          <div className='signup-curp-method-button-container'>
+            <Button onClick={onCancel}>Cancelar</Button>
+            <Button onClick={continueWithCurp}>Continuar</Button>
+          </div>
         </div>
   )
 }

@@ -1,0 +1,17 @@
+.welcomeMessage-container{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.welcomeMessage-container h1{
+    font-family: "Raleway", sans-serif;
+    font-weight: 200;
+    font-size: calc(var(--heading-text) + 40px);
+}
+
+.welcomeMessage-container h2{
+    font-family: "Raleway", sans-serif;
+    font-weight: 400;
+    font-size: calc(var(--heading-text) + 10px);
+}

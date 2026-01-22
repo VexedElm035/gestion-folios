@@ -3,6 +3,7 @@ import Button from '@/components/button/Button'
 import type { CurpState, PhoneAuthState, SignupData, SignupLocks, SignupMethod } from '../signupTypes'
 import CurpMethod from './substeps/CurpMethod';
 import TelMethod from './substeps/TelMethod';
+import './signupmethod.css'
 
 export type SignUpMethodHandle = {
   handleBack: () => boolean;
@@ -52,7 +53,7 @@ const SignUpMethod = forwardRef<SignUpMethodHandle, SignUpMethodProps>(({ onNext
   }), [methodView, onBackToSelector, onPhoneAuthChange, phoneAuth.step]);
 
   return (
-    <div>
+    <div className="signup-method-container">
       {!methodView && (
         <>
           <h2>Selecciona tu método de registro</h2>
