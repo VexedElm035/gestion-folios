@@ -130,8 +130,10 @@
   }
 
   .runner-button-container.is-expanded{
-  width: calc(var(--runner-collapsed-width) + 110px);
-  height: calc(var(--runner-collapsed-height) + 445px);
+  /* width: calc(var(--runner-collapsed-width) + 110px); */
+  width: 95vw;
+  height: 85dvh;
+  /* height: calc(var(--runner-collapsed-height) + 445px); */
   /* justify-content: flex-start; */
 }
 

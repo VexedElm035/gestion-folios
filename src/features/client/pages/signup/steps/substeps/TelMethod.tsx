@@ -76,51 +76,58 @@ const TelMethod = ({ onNext, onCancel, onPrefill, onLock, state, onStateChange, 
   };
 
   return (
-    <div>
-      <h3>Teléfono</h3>
+    <div className='signup-any-method-container'>
+      <h3>Registro con Teléfono</h3>
+      <div className="signup-method-options-container">
+        {step === 'verified' && verifiedTelefono && (
+          <>
+            <p className='signup-info-caption'>Teléfono verificado: {verifiedTelefono}</p>
+            {error && <p className='signup-info-caption signup-info-caption-error'>{error}</p>}
+            <Button onClick={goToPhone}>Cambiar teléfono</Button>
+            <Button onClick={continueIfVerified}>Continuar</Button>
+            {/* <Button onClick={resetToSelector}>Cancelar</Button> */}
+          </>
+        )}
 
-      {step === 'verified' && verifiedTelefono && (
-        <>
-          <p>Teléfono verificado: {verifiedTelefono}</p>
-          {error && <p>{error}</p>}
-          <Button onClick={goToPhone}>Cambiar teléfono</Button>
-          <Button onClick={continueIfVerified}>Continuar</Button>
-          <Button onClick={resetToSelector}>Cancelar</Button>
-        </>
-      )}
+        {step === 'phone' && (
+          <>
+            <Input
+              id="telefono"
+              label="Ingresa tu número de teléfono"
+              type="tel"
+              value={telefono}
+              onChange={(e) => handleTelefonoChange(e.target.value)}
+              maxLength={10}
+            />
+            {error && <p className='signup-info-caption signup-info-caption-error'>{error}</p>}
+            <div className='signup-any-method-button-container'>
 
-      {step === 'phone' && (
-        <>
-          <Input
-            id="telefono"
-            label="Ingresa tu número de teléfono"
-            type="tel"
-            value={telefono}
-            onChange={(e) => handleTelefonoChange(e.target.value)}
-            maxLength={10}
-          />
-          {error && <p>{error}</p>}
-          <Button onClick={resetToSelector}>Cancelar</Button>
-          <Button onClick={send2faCode}>Enviar código</Button>
-        </>
-      )}
+            {/* <button className='signup-button-back' onClick={resetToSelector}>Cancelar</button> */}
+            <button className='signup-button-next' onClick={send2faCode}>Siguiente</button >
+            </div>
+          </>
+        )}
 
-      {step === 'code' && (
-        <>
-          <p>Te enviamos un código al {telefono}</p>
-          <Input
-            id="2faCode"
-            label="Código"
-            type="text"
-            value={code}
-            onChange={(e) => onStateChange({ code: e.target.value })}
-          />
-          {error && <p>{error}</p>}
-          <Button onClick={goToPhone}>Cambiar teléfono</Button>
-          <Button onClick={resetToSelector}>Cancelar</Button>
-          <Button onClick={verify2faCode}>Verificar y continuar</Button>
-        </>
-      )}
+        {step === 'code' && (
+          <>
+            <p className='signup-info-caption'>Te enviamos un código al {telefono}</p>
+            <Input
+              id="2faCode"
+              label="Código"
+              type="text"
+              value={code}
+              onChange={(e) => onStateChange({ code: e.target.value })}
+            />
+            {error && <p className='signup-info-caption signup-info-caption-error'>{error}</p>}
+            <div className='signup-any-method-button-container'>
+
+            <button className='signup-button-back' onClick={goToPhone}>Cambiar teléfono</button>
+            {/* <button className='signup-button-back' onClick={resetToSelector}>Cancelar</button> */}
+            <button className='signup-button-next' onClick={verify2faCode}>Verificar y continuar</button>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   )
 }

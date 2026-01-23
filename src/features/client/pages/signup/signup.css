@@ -10,19 +10,98 @@
 .signup-top-container{
   display: flex;
   justify-content: flex-end;
-  height: 15%;
+  height: 10%;
 }
 
 .signup-main-container{
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 70%;
+  height: 75%;
   width: 100%;
 }
 
 .signup-bottom-container{
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  align-items: flex-end;
   height: 15%;
+}
+
+.signup-bottom-container-centered{
+  justify-content: center;
+}
+
+.signup-navigation-button {
+  width: calc(var(--heading-text) + 150px);
+  height: calc(var(--heading-text) + 40px);
+  background-color: #0158d1;
+  color: white;
+  border-radius: 25px;
+  border: 1px solid rgba(var(--secondary-text-color-rgb), 0.35);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--heading-text);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.signup-navigation-button-back {
+  background-color: var(--primary-color);
+  color: var(--regular-text-color);
+  width: calc(var(--regular-text) + 60px);
+  height: calc(var(--regular-text) + 20px);
+  font-size: var(--caption-text);
+  border-radius: 15px;
+  border: 1px solid rgba(var(--secondary-text-color-rgb), 0.05);
+  box-shadow: none;
+}
+
+.signup-navigation-button-next {
+  
+}
+
+
+.signup-button-next{
+  width: calc(var(--heading-text) + 140px);
+  height: calc(var(--heading-text) + 30px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--heading-text);
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 25px;
+  box-shadow: none;
+  background-color: #0158d1;
+  color: white;
+}
+
+
+.signup-button-back{
+  width: calc(var(--heading-text) + 140px);
+  height: calc(var(--heading-text) + 30px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--heading-text);
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 25px;
+  box-shadow: none;
+  background-color: var(--secondary-color);
+  color: var(--regular-text-color);
+}
+
+.signup-info-caption {
+  font-size: var(--caption-text);
+  margin: 0;
+}
+.signup-info-caption-error{
+
 }

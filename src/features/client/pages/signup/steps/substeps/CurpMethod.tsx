@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Button from '@/components/button/Button'
 import Input from '@/components/form/input/Input';
 import type { SignupData, SignupLocks } from '../../signupTypes';
 import './curpmethod.css';
@@ -107,22 +106,24 @@ const CurpMethod = ({ onNext, onCancel, onPrefill, onLock, curp, onCurpChange }:
   };
 
   return (
-     <div className='signup-curp-method-container'>
-          <h3>Registro con CURP</h3>
-          <Input
-            id="curp"
-            label="Ingresa tu curp"
-            type="text"
-            value={curp}
-            onChange={(e) => onCurpChange(e.target.value)}
-            maxLength={18}
-          />
-          {error && <p>{error}</p>}
-          <div className='signup-curp-method-button-container'>
-            <Button onClick={onCancel}>Cancelar</Button>
-            <Button onClick={continueWithCurp}>Continuar</Button>
-          </div>
+    <div className='signup-any-method-container'>
+      <h3>Registro con CURP</h3>
+      <div className="signup-method-options-container">
+        <Input
+          id="curp"
+          label="Ingresa tu curp"
+          type="text"
+          value={curp}
+          onChange={(e) => onCurpChange(e.target.value)}
+          maxLength={18}
+        />
+        {error && <p className='signup-info-caption signup-info-caption-error'>{error}</p>}
+        <div className='signup-any-method-button-container'>
+          {/* <button className='signup-button-back' onClick={onCancel}>Cancelar</button> */}
+          <button className='signup-button-next' onClick={continueWithCurp}>Siguiente</button>
         </div>
+      </div>
+    </div>
   )
 }
 

@@ -15,8 +15,8 @@
 .runner-section {
     position: fixed;
     top: 20px;
-    right: 43%;
-    
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 1001;
     width: fit-content;
     display: flex;

@@ -1,5 +1,4 @@
 import { forwardRef, useImperativeHandle } from 'react'
-import Button from '@/components/button/Button'
 import type { CurpState, PhoneAuthState, SignupData, SignupLocks, SignupMethod } from '../signupTypes'
 import CurpMethod from './substeps/CurpMethod';
 import TelMethod from './substeps/TelMethod';
@@ -57,8 +56,10 @@ const SignUpMethod = forwardRef<SignUpMethodHandle, SignUpMethodProps>(({ onNext
       {!methodView && (
         <>
           <h2>Selecciona tu método de registro</h2>
-          <Button onClick={() => onSelectMethod('curp')}>curp</Button>
-          <Button onClick={() => onSelectMethod('telefono')}>telefono</Button>
+          <div className="signup-method-options-container">
+            <button className="signup-button-next" onClick={() => onSelectMethod('telefono')}>Teléfono</button>
+            <button className="signup-button-next" onClick={() => onSelectMethod('curp')}>CURP</button>
+          </div>
         </>
       )}
 

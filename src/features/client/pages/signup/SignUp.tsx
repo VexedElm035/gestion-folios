@@ -312,12 +312,14 @@ const SignUp = () => {
         {currentStep === 'thankyou' && <ThankYouPage />}
       </section>
 
-      <section className='signup-bottom-container'>
-        <button onClick={goBack} disabled={!canGoBack} aria-label="Regresar">
-          <IoIosArrowBack size={30} />
+      <section className={`signup-bottom-container ${!canGoBack ? 'signup-bottom-container-centered' : ''}`}>
+        <button className='signup-navigation-button signup-navigation-button-back' style={!canGoBack ? { display: 'none' } : {}} onClick={goBack} disabled={!canGoBack} aria-label="Regresar">
+          <IoIosArrowBack />
+          <p>Regresar</p>
         </button>
-        <button onClick={goNext} disabled={!canGoNext} aria-label="Siguiente">
-          <IoIosArrowForward size={30} />
+        <button className='signup-navigation-button signup-navigation-button-next' style={!canGoNext ? { display: 'none' } : {}}onClick={goNext} disabled={!canGoNext} aria-label="Siguiente">
+          <p>Siguiente</p>
+          {/* <IoIosArrowForward size={30} /> */}
         </button>
       </section>
     </div>
