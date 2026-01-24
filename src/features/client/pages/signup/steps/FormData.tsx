@@ -18,7 +18,7 @@ const FormData = ({ data, locks, onChange, onSubmitSuccess }: FormDataProps) => 
   };
 
   return (
-    <div>
+    <div className='form-data-container'>
       <form onSubmit={handleSubmit} className='runner-fields'>
         <Input id="nombre" label="Nombre" type="text" value={data.nombre} onChange={(e) => onChange({ nombre: e.target.value })}/>
         <Input id="apellido" label="Apellido" type="text" value={data.apellido} onChange={(e) => onChange({ apellido: e.target.value })}/>

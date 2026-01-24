@@ -1,6 +1,6 @@
 import './welcomemessage.css';
 
-const WelcomeMessage = () => {
+const WelcomeMessage = ({ goNext } : { goNext: () => void }) => {
   return (
     <div className='welcomeMessage-container'>
       <h1>Hola!</h1>
@@ -8,6 +8,10 @@ const WelcomeMessage = () => {
       <p>mensaje</p>
       <p>mensaje</p>
       <p>aaaaaaaaaaaaaaaa</p>
+      <button className='signup-navigation-button signup-navigation-button-next' onClick={goNext} aria-label="Siguiente">
+          <p>Siguiente</p>
+          {/* <IoIosArrowForward size={30} /> */}
+        </button>
     </div>
   )
 }

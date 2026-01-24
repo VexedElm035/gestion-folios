@@ -272,7 +272,7 @@ const SignUp = () => {
       </section>
 
       <section className='signup-main-container'>
-        {currentStep === 'welcome' && <WelcomeMessage />}
+        {currentStep === 'welcome' && <WelcomeMessage goNext={goNext}/>}
         {currentStep === 'method' && (
           <SignUpMethod
           ref={signUpMethodRef}
@@ -317,10 +317,10 @@ const SignUp = () => {
           <IoIosArrowBack />
           <p>Regresar</p>
         </button>
-        <button className='signup-navigation-button signup-navigation-button-next' style={!canGoNext ? { display: 'none' } : {}}onClick={goNext} disabled={!canGoNext} aria-label="Siguiente">
+        {/* <button className='signup-navigation-button signup-navigation-button-next' style={!canGoNext ? { display: 'none' } : {}}onClick={goNext} disabled={!canGoNext} aria-label="Siguiente">
           <p>Siguiente</p>
-          {/* <IoIosArrowForward size={30} /> */}
-        </button>
+          <IoIosArrowForward size={30} />
+        </button> */}
       </section>
     </div>
   )

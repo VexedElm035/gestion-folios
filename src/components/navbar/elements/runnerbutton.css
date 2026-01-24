@@ -126,7 +126,9 @@
 
   .runner-button-container{
     --runner-collapsed-width: calc(var(--heading-text) + 225px);
-    --runner-collapsed-height: calc(var(--heading-text) + 25px);
+    --runner-collapsed-width: 90dvw;
+    
+    --runner-collapsed-height: calc(var(--heading-text) + 40px);
   }
 
   .runner-button-container.is-expanded{

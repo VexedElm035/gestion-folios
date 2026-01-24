@@ -125,7 +125,7 @@
 
 @media (max-width: 480px) {
     .search-bar-button, .search-bar-clear, .search-bar-input-container .input-element{
-        font-size: calc(var(--heading-text) - 2px);
+        font-size: calc(var(--regular-text) - 2px);
     }
 
     .search-bar-container{

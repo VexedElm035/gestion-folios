@@ -8,7 +8,10 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  
+
+  --screen-height: 100dvh;
+  --screen-width: 100dvw;
+
   --heading-text: 24px; /*20*/
   --regular-text: 20px; /*18*/
   --caption-text: 16px; /*14*/
@@ -77,5 +80,9 @@ button:focus-visible {
     --heading-text: 20px; /*20*/
     --regular-text: 16px; /*18*/
     --caption-text: 12px; /*14*/
+    
+    --heading-text: calc(var(--screen-height) * 0.035);
+    --regular-text: calc(var(--screen-height) * 0.025);
+    --caption-text: calc(var(--screen-height) * 0.02);
   }
 }

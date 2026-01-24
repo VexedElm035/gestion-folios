@@ -139,7 +139,7 @@
 
   .navbar-items{
     height: calc(var(--regular-text) + 35px);
-     border-radius: 15px;
+    border-radius: 15px;
   }
 
   .navbar-item span{
@@ -147,7 +147,7 @@
   }
 
   .navbar-item-text{
-    font-size: calc(var(--heading-text) - 6px);
+    font-size: calc(var(--regular-text) - 6px);
   }
 }
 /* .navbar-item:hover{
