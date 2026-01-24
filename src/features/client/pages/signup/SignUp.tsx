@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 import { WelcomeMessage, SignUpMethod, FormData, ThankYouPage } from './steps';
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
 import './signup.css'
 import Options from '@/components/options/Options';
 import type { CurpState, PhoneAuthState, SignupData, SignupLocks, SignupMethod, Step } from './signupTypes';

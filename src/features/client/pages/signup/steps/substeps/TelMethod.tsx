@@ -16,16 +16,9 @@ type TelMethodProps = {
   onTelefonoInvalidated: () => void;
 };
 
-const TelMethod = ({ onNext, onCancel, onPrefill, onLock, state, onStateChange, onTelefonoInvalidated }: TelMethodProps) => {
+const TelMethod = ({ onNext, onPrefill, onLock, state, onStateChange, onTelefonoInvalidated }: TelMethodProps) => {
   const { step, telefono, code, verifiedTelefono } = state;
   const [error, setError] = useState<string | null>(null);
-
-  const resetToSelector = () => {
-    setError(null);
-    onStateChange({ step: 'phone', telefono: '', code: '', verifiedTelefono: null });
-    onTelefonoInvalidated();
-    onCancel();
-  };
 
   const goToPhone = () => {
     setError(null);

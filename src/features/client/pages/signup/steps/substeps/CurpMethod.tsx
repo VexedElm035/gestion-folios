@@ -71,7 +71,7 @@ type CurpMethodProps = {
   onCurpChange: (curp: string) => void;
 };
 
-const CurpMethod = ({ onNext, onCancel, onPrefill, onLock, curp, onCurpChange }: CurpMethodProps) => {
+const CurpMethod = ({ onNext, onPrefill, onLock, curp, onCurpChange }: CurpMethodProps) => {
   const [error, setError] = useState<string | null>(null);
 
   const continueWithCurp = () => {
