@@ -2,7 +2,6 @@ import { forwardRef, useImperativeHandle } from 'react'
 import type { CurpState, PhoneAuthState, SignupData, SignupLocks, SignupMethod } from '../signupTypes'
 import CurpMethod from './substeps/CurpMethod';
 import TelMethod from './substeps/TelMethod';
-import './signupmethod.css'
 
 export type SignUpMethodHandle = {
   handleBack: () => boolean;

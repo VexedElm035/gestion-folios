@@ -1,16 +1,19 @@
+/* Main/Geberal SignUp Styles */
+
 .signup-container{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
   width: 100%;
-  /* align-items: center; */
+  align-items: center;
 }
 
 .signup-top-container{
   display: flex;
   justify-content: flex-end;
   height: 10%;
+  width: 60%;
 }
 
 .signup-main-container{
@@ -18,7 +21,7 @@
   justify-content: center;
   align-items: center;
   height: 80%;
-  width: 100%;
+  width: 60%;
 }
 
 .signup-bottom-container{
@@ -26,6 +29,7 @@
   justify-content: space-between;
   align-items: flex-end;
   height: 7%;
+  width: 60%;
 }
 
 .signup-bottom-container-centered{
@@ -80,7 +84,6 @@
   color: white;
 }
 
-
 .signup-button-back{
   width: calc(var(--heading-text) + 140px);
   height: calc(var(--heading-text) + 30px);
@@ -102,16 +105,213 @@
   font-size: var(--caption-text);
   margin: 0;
 }
+
 .signup-info-caption-error{
 
 }
 
-.form-data-container{
-   display: flex;
+.signup-header-steps-text{
+  font-family: "Raleway", sans-serif;
+  font-weight: 400;
+  font-size: calc(var(--heading-text) + 10px);
+}
+
+/* SignUp Welcome Styles */
+
+.welcomeMessage-container{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.welcomeMessage-container h1{
+    font-family: "Raleway", sans-serif;
+    font-weight: 200;
+    font-size: calc(var(--heading-text) + 40px);
+    padding: 0px;
+    margin: 0px;
+}
+
+.welcomeMessage-container h2{
+    font-family: "Raleway", sans-serif;
+    font-weight: 400;
+    font-size: calc(var(--heading-text) + 10px);
+    padding: 0px;
+    margin: 0px;
+}
+
+/* SignUp Method Styles */
+
+.signup-method-container{
+    display: flex;
     flex-direction: column;
     height: 100%;
     gap: 40px;
     align-items: center;
     width: 100%;
     justify-content: space-between;
+}
+
+.signup-method-container h2{
+    font-family: "Raleway", sans-serif;
+    font-weight: 400;
+    font-size: calc(var(--heading-text) + 10px);
+}
+
+.signup-method-container .button {
+    width: fit-content;
+    min-width: 200px;
+}
+
+.signup-method-container .input-container{
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 480px;
+}
+
+.signup-method-container .input-label{
+    font-size: calc(var(--caption-text) + 0px);
+    padding: 0px 10px;
+}
+
+.signup-method-container .input-element{
+    padding: 0px;
+    font-size: calc(var(--regular-text) + 3px);
+    height: calc(var(--regular-text) + 25px);
+    padding: 0px 10px;
+    
+    
+    border-radius: 10px;
+}
+
+.signup-method-options-container{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+    height: 70%;
+    align-items: center;
+}
+
+.signup-any-method-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.signup-any-method-container h3{
+    font-family: "Raleway", sans-serif;
+    font-weight: 400;
+    font-size: calc(var(--heading-text) + 5px);
+}
+
+.signup-any-method-button-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+/* SignUp CurpMethod Styles */
+
+
+/* SignUp TelMethod Styles */
+
+
+/* SignUp FormData Styles */
+
+.form-data-container{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 40px;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.form-data-container .runner-fields{
+  height: 100%;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: space-between;
+  align-items: center;
+  justify-content: start;
+  gap: 15px;
+}
+
+.runner-fields .input-container{
+  width: 100%;
+  justify-content: space-around;
+  gap: 15px;
+}
+
+.runner-fields .input-label{
+  margin: 0;
+  width: 30%;
+}
+
+.runner-fields .input-element{
+  width: 70%;
+  border-radius: 0px;
+  background-color: transparent;
+  border-bottom: 1px solid rgba(var(--secondary-text-color-rgb), 0.35);
+  padding: 0;
+  text-indent: 4px;
+}
+
+.runner-fields .dropdown-container{
+  width: 100%;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.runner-fields .dropdown-label{
+  margin: 0;
+  width: 30%;
+}
+
+.runner-fields .dropdown-element{
+  width: 70%;
+  border-radius: 0px;
+  background-color: transparent;
+  border-bottom: 1px solid rgba(var(--secondary-text-color-rgb), 0.35);
+  padding: 0;
+  text-indent: 0px;
+}
+
+@media (max-width: 480px) {
+.signup-top-container{
+  display: flex;
+  justify-content: flex-end;
+  height: 10%;
+  width: 100%;
+}
+
+.signup-main-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80%;
+  width: 100%;
+}
+
+.signup-bottom-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 7%;
+  width: 100%;
+}
+
+
 }

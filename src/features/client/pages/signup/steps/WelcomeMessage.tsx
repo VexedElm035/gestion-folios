@@ -1,4 +1,3 @@
-import './welcomemessage.css';
 
 const WelcomeMessage = ({ goNext } : { goNext: () => void }) => {
   return (

@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import Input from '@/components/form/input/Input';
 import type { SignupData, SignupLocks } from '../../signupTypes';
-import './curpmethod.css';
-
 
 const CURP_MOCK: Record<string, {
   nombre: string;
@@ -111,9 +109,10 @@ const CurpMethod = ({ onNext, onPrefill, onLock, curp, onCurpChange }: CurpMetho
       <div className="signup-method-options-container">
         <Input
           id="curp"
-          label="Ingresa tu curp"
+          label="Ingresa tu CURP"
           type="text"
           value={curp}
+          style={{ textTransform: "uppercase" }}
           onChange={(e) => onCurpChange(e.target.value)}
           maxLength={18}
         />

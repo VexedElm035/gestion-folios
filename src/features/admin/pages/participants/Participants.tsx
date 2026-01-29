@@ -25,8 +25,8 @@ const persons: Person[] = [
   folio: Math.random().toString(36).substring(2, 8).toUpperCase(),
   name: ['Juan', 'María', 'Pedro', 'Ana', 'Luis', 'Carmen', 'José', 'Laura', 'Miguel', 'Sofia'][Math.floor(Math.random() * 10)],
   apellido: ['García', 'Rodríguez', 'Martínez', 'López', 'González', 'Pérez', 'Sánchez', 'Ramírez', 'Torres', 'Flores'][Math.floor(Math.random() * 10)],
-  distancia: ['5', '10'][Math.floor(Math.random() * 2)] + ' KM',
-  categoria: ['Libre', 'Juvenil', 'Master'][Math.floor(Math.random() * 3)],
+  distancia: ['4', '8'][Math.floor(Math.random() * 2)] + ' KM',
+  categoria: ['Infantil', 'Femenil', 'Varonil'][Math.floor(Math.random() * 3)],
   tel: `${Math.floor(Math.random() * 9000000000) + 1000000000}`,
   fecha_registro: new Date(Date.now() - Math.floor(Math.random() * 10000000000)).toLocaleDateString(),
 }))
