@@ -69,8 +69,8 @@ const TelMethod = ({ onNext, onPrefill, onLock, state, onStateChange, onTelefono
   };
 
   return (
-    <div className='signup-any-method-container'>
-      <h3>Registro con Teléfono</h3>
+    <div className='signup-steps-container signup-any-method-container'>
+      <h3 className='signup-header-substeps-text'>Registro con Teléfono</h3>
       <div className="signup-method-options-container">
         {step === 'verified' && verifiedTelefono && (
           <>

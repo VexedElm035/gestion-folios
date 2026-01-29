@@ -104,8 +104,8 @@ const CurpMethod = ({ onNext, onPrefill, onLock, curp, onCurpChange }: CurpMetho
   };
 
   return (
-    <div className='signup-any-method-container'>
-      <h3>Registro con CURP</h3>
+    <div className='signup-steps-container signup-any-method-container'>
+      <h3 className='signup-header-substeps-text'>Registro con CURP</h3>
       <div className="signup-method-options-container">
         <Input
           id="curp"
