@@ -18,7 +18,7 @@
 .signup-top-container{
   display: flex;
   justify-content: flex-end;
-  height: 10%;
+  height: auto;
   width: 100%;
 }
 
@@ -26,7 +26,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80%;
+  height: 100%;
   width: 100%;
 }
 
@@ -34,7 +34,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  height: 7%;
+  height: auto;
   width: 100%;
 }
 
@@ -64,8 +64,11 @@
   height: calc(var(--heading-text) + 20px);
   font-size: var(--caption-text);
   border-radius: 15px;
-  border: 1px solid rgba(var(--secondary-text-color-rgb), 0.05);
+  /* border: 1px solid rgba(var(--secondary-text-color-rgb), 0.05); */
+  border: none;
+  border-radius: 0;
   box-shadow: none;
+  background-color: transparent;
 }
 
 .signup-navigation-button-next {
@@ -74,14 +77,15 @@
 
 
 .signup-button-next{
-  width: calc(var(--heading-text) + 140px);
+  width: auto;
+  min-width: calc(var(--heading-text) + 140px);
   height: calc(var(--heading-text) + 30px);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: var(--heading-text);
   gap: 10px;
-  padding: 0;
+  padding: 0px 30px;
   margin: 0;
   border: none;
   border-radius: 25px;
@@ -146,7 +150,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-around;
 }
 
 .signup-top-container .navbar-button{
@@ -175,6 +179,7 @@
 
 .welcomeMessage-container{
   /* justify-content: space-evenly; */
+  padding-bottom: 50px;
 }
 
 /* SignUp Method Styles */
@@ -226,9 +231,12 @@
 
 .signup-any-method-button-container{
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+
+    
 }
 
 /* SignUp CurpMethod Styles */
@@ -236,6 +244,25 @@
 
 /* SignUp TelMethod Styles */
 
+
+.change-phone-number{
+  background-color: transparent;
+  color: var(--primary-text-color);
+  font-size: var(--caption-text);
+  border: none;
+  text-decoration: underline;
+  box-shadow: none;
+  width: auto;
+  height: auto;
+}
+
+.signup-tel-method-resend{
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+}
 
 /* SignUp FormData Styles */
 
@@ -310,7 +337,7 @@
 .signup-top-container{
   display: flex;
   justify-content: flex-end;
-  height: 5%;
+  height: auto;
   width: 100%;
 }
 
@@ -318,7 +345,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 88%;
+  height: 100%;
   width: 95%;
 }
 
@@ -326,7 +353,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  height: 7%;
+  height: auto;
   width: 100%;
 }
 

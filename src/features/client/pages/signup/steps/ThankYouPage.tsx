@@ -23,10 +23,9 @@ const ThankYouPage = () => {
 
   return (
     <div className='signup-steps-container'>
-      <h1 className='signup-header-text'>Gracias por registrarte!</h1>
-      <h2 className='signup-header-steps-text'>Tu registro ha sido exitoso.</h2>
-      <p>tu numero de folio es: nnnnnn</p>
-      <p>Tu kit estara disponible en el parque central el dia 21 de febrero</p>
+      <h2 className='signup-header-steps-text'>Gracias por registrarte!</h2>
+      <p>tu numero de folio es: #0465465</p>
+      <p>Tu kit estará disponible en el parque central el día 21 de febrero a las 17:00</p>
       <p>Nos vemos en la carrera en:</p>
       <div>
         {/* <h3>{eventDate.toLocaleDateString()}</h3> */}

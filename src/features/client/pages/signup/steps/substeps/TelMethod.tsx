@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import Button from '@/components/button/Button'
 import Input from '@/components/form/input/Input'
 import InputOtp from '@/components/form/input/InputOtp'
 
@@ -77,9 +76,11 @@ const TelMethod = ({ onNext, onPrefill, onLock, state, onStateChange, onTelefono
           <>
             <p className='signup-info-caption'>Teléfono verificado: {verifiedTelefono}</p>
             {error && <p className='signup-info-caption signup-info-caption-error'>{error}</p>}
-            <Button onClick={goToPhone}>Cambiar teléfono</Button>
-            <Button onClick={continueIfVerified}>Continuar</Button>
-            {/* <Button onClick={resetToSelector}>Cancelar</Button> */}
+
+            <div className='signup-any-method-button-container'>
+              <button className='signup-button-next' onClick={continueIfVerified}>Continuar</button>
+              <button className='signup-button-back change-phone-number' onClick={goToPhone}>Cambiar teléfono</button>
+            </div>
           </>
         )}
 
@@ -92,7 +93,6 @@ const TelMethod = ({ onNext, onPrefill, onLock, state, onStateChange, onTelefono
               value={telefono}
               onChange={(e) => handleTelefonoChange(e.target.value)}
               maxLength={10}
-              autoFocus={true}
             />
             {error && <p className='signup-info-caption signup-info-caption-error'>{error}</p>}
             <div className='signup-any-method-button-container'>
@@ -105,7 +105,13 @@ const TelMethod = ({ onNext, onPrefill, onLock, state, onStateChange, onTelefono
 
         {step === 'code' && (
           <>
-            <p className='signup-info-caption'>Te enviamos un código al {telefono}</p>
+            <div>
+              <p className='signup-info-caption'>Te enviamos un código al <span style={{'color':'var(--secondary-text-color)'}}>{telefono}</span></p>
+              <div className='signup-tel-method-resend'>
+                <p className='signup-info-caption'>No lo recibiste?</p>
+                <button className='signup-button-back change-phone-number' onClick={send2faCode}>Reenviar código</button>
+              </div>
+            </div>
             <InputOtp
               id="2faCode"
               label="Código de verificación"
@@ -116,10 +122,9 @@ const TelMethod = ({ onNext, onPrefill, onLock, state, onStateChange, onTelefono
             />
             {error && <p className='signup-info-caption signup-info-caption-error'>{error}</p>}
             <div className='signup-any-method-button-container'>
-
-            <button className='signup-button-back' onClick={goToPhone}>Cambiar teléfono</button>
-            {/* <button className='signup-button-back' onClick={resetToSelector}>Cancelar</button> */}
-            <button className='signup-button-next' onClick={verify2faCode}>Verificar y continuar</button>
+              {/* <button className='signup-button-back' onClick={resetToSelector}>Cancelar</button> */}
+              <button className='signup-button-next' onClick={verify2faCode}>Verificar y continuar</button>
+              <button className='signup-button-back change-phone-number' onClick={goToPhone}>Cambiar teléfono</button>
             </div>
           </>
         )}

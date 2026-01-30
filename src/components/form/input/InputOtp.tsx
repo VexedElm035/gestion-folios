@@ -82,7 +82,7 @@ const InputOtp = ({ id, label, value, onChange, length = 6, autoFocus = false, c
           <input
             key={index}
             id={`${id}-${index}`}
-            ref={(el) => (inputRefs.current[index] = el)}
+            ref={(el) => { inputRefs.current[index] = el; }}
             type="text"
             inputMode="numeric"
             pattern="\d{1}"

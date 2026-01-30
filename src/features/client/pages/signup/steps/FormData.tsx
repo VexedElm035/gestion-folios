@@ -10,7 +10,7 @@ type FormDataProps = {
   onSubmitSuccess: () => void;
 };
 
-const FormData = ({ data, locks, onChange, onSubmitSuccess }: FormDataProps) => {
+const FormData = ({ data, onChange, onSubmitSuccess }: FormDataProps) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Simulación de alta de corredor. Aquí iría tu POST real.
