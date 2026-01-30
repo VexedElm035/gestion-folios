@@ -25,3 +25,61 @@
 .input-element::placeholder{
     color: var(--secondary-text-color);
 }
+
+/* Input OTP Styles */
+.input-otp-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.input-otp-label {
+    font-family: var(--font-family);
+    font-size: var(--heading-text);
+    color: var(--primary-text-color);
+}
+
+.input-otp-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.input-otp-digit {
+    font-family: var(--font-family);
+    font-size: calc(var(--heading-text) + 10px);
+    font-weight: 300;
+    width: calc(var(--heading-text) + 35px);
+    height: calc(var(--heading-text) + 35px);
+    text-align: center;
+    border: 1px solid rgba(var(--secondary-text-color-rgb), 0.3);
+    border-radius: 3px;
+    background-color: var(--primary-color);
+    color: var(--primary-text-color);
+    transition: all 0.2s ease;
+    caret-color: var(--primary-text-color);
+}
+
+.input-otp-digit:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.2);
+    transform: scale(1.05);
+}
+
+.input-otp-digit:not(:placeholder-shown) {
+    border-color: rgba(var(--secondary-text-color-rgb), 0.5);
+}
+
+@media (max-width: 480px) {
+    .input-otp-container {
+        gap: 5px;
+    }
+    
+    .input-otp-digit {
+        width: calc(var(--heading-text) + 10px);
+        height: calc(var(--heading-text) + 20px);
+        font-size: var(--heading-text);
+    }
+}

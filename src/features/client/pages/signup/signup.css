@@ -7,7 +7,7 @@
   height: 90%;
   width: 70%;
   align-items: center;
-  background-color: rgba(var(--background-color-rgb), 0.10);
+  background-color: rgba(var(--secondary-text-color-rgb), 0.05);
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
   border-radius: 20px;
@@ -146,7 +146,29 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
+}
+
+.signup-top-container .navbar-button{
+  position:relative;
+  width: calc(var(--regular-text) + 15px);
+  height: calc(var(--regular-text) + 15px);
+  background-color: var(--primary-color);
+  color: var(--regular-text-color);
+  border-radius: 50%;
+  border: 1px solid rgba(var(--secondary-text-color-rgb), 0.35);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--caption-text);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.signup-top-container .options-menu{
+  right: 30px;
+  top: 35px;
+  font-size: var(--heading-text);
 }
 
 /* SignUp Welcome Styles */
@@ -175,14 +197,14 @@
 }
 
 .signup-method-container .input-label{
-    font-size: calc(var(--caption-text) + 0px);
+    font-size: calc(var(--regular-text) + 0px);
     padding: 0px 10px;
 }
 
 .signup-method-container .input-element{
     padding: 0px;
-    font-size: calc(var(--regular-text) + 3px);
-    height: calc(var(--regular-text) + 25px);
+    font-size: calc(var(--heading-text) + 2px);
+    height: calc(var(--heading-text) + 25px);
     padding: 0px 10px;
     border-radius: 10px;
     background-color: var(--primary-color);
@@ -314,6 +336,21 @@
 
 .form-data-container .runner-fields{
   width: 100%;
+}
+
+.signup-top-container .options-menu{
+  right: 25px;
+  top: 5dvh;
+  font-size: var(--heading-text);
+}
+
+.signup-top-container .theme-switch-option{
+  font-size: var(--heading-text);
+}
+
+.signup-top-container .theme-switch {
+  height: calc(var(--heading-text) + 7px);
+  width: calc((var(--heading-text) + 100px));
 }
 
 }

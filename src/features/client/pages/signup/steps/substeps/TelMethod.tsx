@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Button from '@/components/button/Button'
 import Input from '@/components/form/input/Input'
+import InputOtp from '@/components/form/input/InputOtp'
 
 import type { PhoneAuthState, SignupData, SignupLocks } from '../../signupTypes'
 
@@ -86,11 +87,12 @@ const TelMethod = ({ onNext, onPrefill, onLock, state, onStateChange, onTelefono
           <>
             <Input
               id="telefono"
-              label="Ingresa tu número de teléfono"
+              label="Ingresa tu teléfono"
               type="tel"
               value={telefono}
               onChange={(e) => handleTelefonoChange(e.target.value)}
               maxLength={10}
+              autoFocus={true}
             />
             {error && <p className='signup-info-caption signup-info-caption-error'>{error}</p>}
             <div className='signup-any-method-button-container'>
@@ -104,12 +106,13 @@ const TelMethod = ({ onNext, onPrefill, onLock, state, onStateChange, onTelefono
         {step === 'code' && (
           <>
             <p className='signup-info-caption'>Te enviamos un código al {telefono}</p>
-            <Input
+            <InputOtp
               id="2faCode"
-              label="Código"
-              type="text"
+              label="Código de verificación"
               value={code}
-              onChange={(e) => onStateChange({ code: e.target.value })}
+              onChange={(value) => onStateChange({ code: value })}
+              length={6}
+              autoFocus={true}
             />
             {error && <p className='signup-info-caption signup-info-caption-error'>{error}</p>}
             <div className='signup-any-method-button-container'>
