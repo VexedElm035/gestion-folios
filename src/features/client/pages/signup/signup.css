@@ -4,16 +4,22 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
-  width: 100%;
+  height: 90%;
+  width: 70%;
   align-items: center;
+  background-color: rgba(var(--background-color-rgb), 0.10);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border-radius: 20px;
+  padding: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .signup-top-container{
   display: flex;
   justify-content: flex-end;
   height: 10%;
-  width: 60%;
+  width: 100%;
 }
 
 .signup-main-container{
@@ -21,7 +27,7 @@
   justify-content: center;
   align-items: center;
   height: 80%;
-  width: 60%;
+  width: 100%;
 }
 
 .signup-bottom-container{
@@ -29,7 +35,7 @@
   justify-content: space-between;
   align-items: flex-end;
   height: 7%;
-  width: 60%;
+  width: 100%;
 }
 
 .signup-bottom-container-centered{
@@ -114,24 +120,24 @@
   font-family: "Raleway", sans-serif;
   font-weight: 200;
   font-size: calc(var(--heading-text) + 40px);
-  padding: 0px;
-  margin: 0px;
+  /* padding: 0px;
+  margin: 0px; */
 }
 
 .signup-header-steps-text{ /* h2 */
   font-family: "Raleway", sans-serif;
   font-weight: 400;
   font-size: calc(var(--heading-text) + 10px);
-  padding: 0px;
-  margin: 0px;
+  /* padding: 0px;
+  margin: 0px; */
 }
 
 .signup-header-substeps-text{ /* h3 */
   font-family: "Raleway", sans-serif;
   font-weight: 400;
   font-size: calc(var(--heading-text) + 5px);
-  padding: 0px;
-  margin: 0px;
+  /* padding: 0px;
+  margin: 0px; */
 }
 
 .signup-steps-container{
@@ -140,19 +146,20 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
 }
 
 /* SignUp Welcome Styles */
 
 .welcomeMessage-container{
-  justify-content: space-evenly;
+  /* justify-content: space-evenly; */
 }
 
 /* SignUp Method Styles */
 
 .signup-method-container{
-    gap: 40px;
-    justify-content: space-between;
+    /* gap: 40px;
+    justify-content: space-between; */
 }
 
 .signup-method-container .button {
@@ -178,6 +185,7 @@
     height: calc(var(--regular-text) + 25px);
     padding: 0px 10px;
     border-radius: 10px;
+    background-color: var(--primary-color);
 }
 
 .signup-method-options-container{
@@ -190,8 +198,8 @@
 }
 
 .signup-any-method-container{
-    justify-content: space-between;
-    gap: 20px;
+    /* justify-content: space-between;
+    gap: 20px; */
 }
 
 .signup-any-method-button-container{
@@ -210,19 +218,18 @@
 /* SignUp FormData Styles */
 
 .form-data-container{
-  gap: 40px;
-  justify-content: space-between;
+
 }
 
 .form-data-container .runner-fields{
   height: 100%;
-  width: 60%;
+  width: 90%;
   display: flex;
   flex-direction: column;
   /* align-items: center; */
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
-  justify-content: start;
+  /* justify-content: start; */
   gap: 15px;
 }
 
@@ -235,6 +242,7 @@
 .runner-fields .input-label{
   margin: 0;
   width: 30%;
+  font-size: var(--heading-text);
 }
 
 .runner-fields .input-element{
@@ -244,6 +252,7 @@
   border-bottom: 1px solid rgba(var(--secondary-text-color-rgb), 0.35);
   padding: 0;
   text-indent: 4px;
+  font-size: var(--heading-text);
 }
 
 .runner-fields .dropdown-container{
@@ -255,6 +264,7 @@
 .runner-fields .dropdown-label{
   margin: 0;
   width: 30%;
+  font-size: var(--heading-text);
 }
 
 .runner-fields .dropdown-element{
@@ -264,13 +274,21 @@
   border-bottom: 1px solid rgba(var(--secondary-text-color-rgb), 0.35);
   padding: 0;
   text-indent: 0px;
+  font-size: var(--heading-text);
+  height: calc(var(--heading-text) + 5px);
 }
 
 @media (max-width: 480px) {
+
+  .signup-container{
+    width: 100%;
+    height: 100%;
+  }
+
 .signup-top-container{
   display: flex;
   justify-content: flex-end;
-  height: 10%;
+  height: 5%;
   width: 100%;
 }
 
@@ -278,8 +296,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80%;
-  width: 100%;
+  height: 88%;
+  width: 95%;
 }
 
 .signup-bottom-container{
@@ -290,5 +308,12 @@
   width: 100%;
 }
 
+.signup-method-options-container{
+   justify-content: center;
+}
+
+.form-data-container .runner-fields{
+  width: 100%;
+}
 
 }

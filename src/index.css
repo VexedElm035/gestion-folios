@@ -80,7 +80,7 @@ button:focus-visible {
     --regular-text: 16px; /*18*/
     --caption-text: 12px; /*14*/
     
-    --heading-text: calc(var(--screen-height) * 0.035);
+    --heading-text: calc(var(--screen-height) * 0.030);
     --regular-text: calc(var(--screen-height) * 0.025);
     --caption-text: calc(var(--screen-height) * 0.02);
   }
