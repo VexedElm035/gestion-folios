@@ -16,15 +16,17 @@
   /* word-break: break-all; */
 }
 
+.main-table thead {
+  border-bottom: 0.1px solid var(--secondary-text-color);
+}
+
 .main-table thead th {
   color: var(--secondary-text-color);
   font-size: var(--caption-text);
   font-weight: normal;
-  border-left: 1px solid rgba(var(--secondary-text-color-rgb), 0.3);
   padding: 0 10px;
   text-align: right;
   margin-bottom: 10px;
-  border-bottom: 1px solid var(--secondary-text-color);
 }
 
 .main-table thead th:first-child {
@@ -112,6 +114,45 @@
   color: #FFFFFF;
   padding: 2px 8px;
   border-radius: 5px;
+}
+
+/* Estilos para divisores de columnas */
+.column-divider-cell {
+  width: 1px;
+  padding: 0 !important;
+  border-left: none !important;
+  position: relative;
+  background-color: var(--regular-text-color);
+  background-color: transparent;
+  height: var(--caption-text);
+}
+
+.column-divider-button {
+  width: 1px;
+  height: var(--caption-text);
+  background: rgba(var(--secondary-text-color-rgb), 0.5);
+  border: none;
+  cursor: col-resize;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+.column-divider-button:active {
+  background-color: var(--regular-text-color);
+}
+
+/* Esto se supone que deberia hacer que al column-divider-cell se le aplique color del background
+    cuando el boton este activo, pero no funciona 
+.column-divider-button:active ~ .column-divider-cell,
+.column-divider-cell:has(+ .column-divider-button:active) {
+  background-color: var(--regular-text-color);
+}
+
+*/
+
+.column-divider-spacer {
+  width: 1px;
+  height: var(--caption-text);
 }
 
 @media (max-width: 480px) {

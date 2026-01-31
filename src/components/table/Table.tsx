@@ -27,8 +27,15 @@ const Table = <Row,>({ columns, rows, getRowKey, visibleColumnKeys, stickyHeader
     <table className={`main-table ${stickyHeader ? 'sticky-header-table' : 'normal-header-table'}`.trim()}>
         <thead>
             <tr>
-                {visible.map((col) => (
-                  <th key={col.key}>{col.label}</th>
+                {visible.map((col, index) => (
+                  <>
+                    <th key={col.key}>{col.label}</th>
+                    {index < visible.length - 1 && (
+                      <th key={`divider-${col.key}`} className="column-divider-cell">
+                        <button className="column-divider-button" aria-label="Divisor de columna" />
+                      </th>
+                    )}
+                  </>
                 ))}
             </tr>
         </thead>
@@ -42,8 +49,15 @@ const Table = <Row,>({ columns, rows, getRowKey, visibleColumnKeys, stickyHeader
         <tbody>
             {rows.map((row, index) => (
                 <tr key={getRowKey ? getRowKey(row, index) : index}>
-                    {visible.map((col) => (
-                      <td key={col.key}>{col.render(row)}</td>
+                    {visible.map((col, colIndex) => (
+                      <>
+                        <td key={col.key}>{col.render(row)}</td>
+                        {colIndex < visible.length - 1 && (
+                          <td key={`divider-${col.key}`} className="column-divider-cell">
+                            <div className="column-divider-spacer" />
+                          </td>
+                        )}
+                      </>
                     ))}
                 </tr>
             ))}
