@@ -1,7 +1,8 @@
-import { useMemo, type ReactNode } from 'react';
+import { useMemo, useEffect, useState, type ReactNode } from 'react';
 import { useTableView, type TableColumnKey } from '@/context/TableViewContext';
 import { Table, RunnerButton } from "@/components";
 import { groupBy as groupByUtil } from '@/utils/groupBy';
+import { api } from '@/utils/api';
 import './participants.css';
 
 type Person = {
@@ -17,23 +18,57 @@ type Person = {
 type ColumnDef = {
   key: TableColumnKey
   label: string
-  render: (person: (typeof persons)[number]) => ReactNode
+  render: (person: Person) => ReactNode
 }
 
-const persons: Person[] = [
-...Array.from({ length: 50 }, () => ({
-  folio: Math.random().toString(36).substring(2, 8).toUpperCase(),
-  name: ['Juan', 'María', 'Pedro', 'Ana', 'Luis', 'Carmen', 'José', 'Laura', 'Miguel', 'Sofia'][Math.floor(Math.random() * 10)],
-  apellido: ['García', 'Rodríguez', 'Martínez', 'López', 'González', 'Pérez', 'Sánchez', 'Ramírez', 'Torres', 'Flores'][Math.floor(Math.random() * 10)],
-  distancia: ['4', '8'][Math.floor(Math.random() * 2)] + ' KM',
-  categoria: ['Infantil', 'Femenil', 'Varonil'][Math.floor(Math.random() * 3)],
-  tel: `${Math.floor(Math.random() * 9000000000) + 1000000000}`,
-  fecha_registro: new Date(Date.now() - Math.floor(Math.random() * 10000000000)).toLocaleDateString(),
-}))
-];
-
 const Participants = () => {
-  
+  const [persons, setPersons] = useState<Person[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchParticipants = async (isBackground = false) => {
+      try {
+        if (!isBackground) setLoading(true);
+        const data = await api.getParticipants();
+
+        if (!isMounted) return;
+
+        // Map backend data to frontend model
+        const mapped = data.map((p: any) => ({
+          folio: p.folio?.folio || 'N/A', // Assuming relation is loaded
+          name: p.nombre,
+          apellido: p.apellido,
+          distancia: p.distancia ? `${p.distancia} KM` : 'N/A',
+          categoria: p.categoria || 'N/A',
+          tel: p.telefono,
+          fecha_registro: new Date(p.created_at).toLocaleDateString()
+        }));
+        setPersons(mapped);
+        setError(null);
+      } catch (err: any) {
+        if (isMounted) setError(err.message);
+      } finally {
+        if (isMounted && !isBackground) setLoading(false);
+      }
+    };
+
+    // Initial fetch
+    fetchParticipants();
+
+    // Auto-refresh every 10 seconds
+    const intervalId = setInterval(() => {
+      fetchParticipants(true);
+    }, 10000);
+
+    return () => {
+      isMounted = false;
+      clearInterval(intervalId);
+    };
+  }, []);
+
   const columns = useMemo<ColumnDef[]>(
     () => [
       { key: 'folio', label: 'Folio', render: (p) => p.folio },
@@ -53,7 +88,7 @@ const Participants = () => {
   const grouped = useMemo(() => {
     if (!groupBy) return null
 
-    const map = groupByUtil(persons, (p) => p[groupBy])
+    const map = groupByUtil(persons, (p) => (p as any)[groupBy])
     const entries = Array.from(map.entries())
 
     entries.sort((a, b) => {
@@ -66,43 +101,46 @@ const Participants = () => {
     })
 
     return entries
-  }, [groupBy]);
+  }, [groupBy, persons]);
+
+  if (loading) return <div className="p-4">Cargando participantes...</div>;
+  if (error) return <div className="p-4 text-red-500">Error: {error}</div>;
 
   return (
     <div>
-        {!groupBy && (
-          <Table
-            columns={columns}
-            rows={persons}
-            visibleColumnKeys={visibleColumnKeys}
-            getRowKey={(p) => p.folio}
-            stickyHeader
-          />
-        )}
+      {!groupBy && (
+        <Table
+          columns={columns}
+          rows={persons}
+          visibleColumnKeys={visibleColumnKeys}
+          getRowKey={(p) => p.folio}
+          stickyHeader
+        />
+      )}
 
-        {groupBy && grouped && (
-          <>
-            {grouped.map(([groupValue, rows]) => (
-              <section key={String(groupValue)} className='participants-group'>
-                <div className='participants-group-title'>
-                  {groupBy === 'distancia' ? `Distancia: ${groupValue}` : `Categoría: ${groupValue}`}
-                </div>
-                <Table
-                  columns={columns}
-                  rows={rows}
-                  visibleColumnKeys={visibleColumnKeys}
-                  getRowKey={(p) => p.folio}
-                  stickyHeader={false}
-                />
-              </section>
-            ))}
-          </>
-        )}
-          
-        <div className="runner-section">
-          <RunnerButton />
-        </div>
-        
+      {groupBy && grouped && (
+        <>
+          {grouped.map(([groupValue, rows]) => (
+            <section key={String(groupValue)} className='participants-group'>
+              <div className='participants-group-title'>
+                {groupBy === 'distancia' ? `Distancia: ${groupValue}` : `Categoría: ${groupValue}`}
+              </div>
+              <Table
+                columns={columns}
+                rows={rows}
+                visibleColumnKeys={visibleColumnKeys}
+                getRowKey={(p) => p.folio}
+                stickyHeader={false}
+              />
+            </section>
+          ))}
+        </>
+      )}
+
+      <div className="runner-section">
+        <RunnerButton />
+      </div>
+
     </div>
   )
 }

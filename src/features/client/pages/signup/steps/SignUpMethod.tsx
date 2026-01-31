@@ -23,9 +23,10 @@ type SignUpMethodProps = {
   phoneAuth: PhoneAuthState;
   onPhoneAuthChange: (patch: Partial<PhoneAuthState>) => void;
   onTelefonoInvalidated: () => void;
+  onTokenReceived?: (token: string) => void;
 };
 
-const SignUpMethod = forwardRef<SignUpMethodHandle, SignUpMethodProps>(({ onNext, onPrefill, onLock, methodView, onSelectMethod, onBackToSelector, curpState, onCurpStateChange, phoneAuth, onPhoneAuthChange, onTelefonoInvalidated }, ref) => {
+const SignUpMethod = forwardRef<SignUpMethodHandle, SignUpMethodProps>(({ onNext, onPrefill, onLock, methodView, onSelectMethod, onBackToSelector, curpState, onCurpStateChange, phoneAuth, onPhoneAuthChange, onTelefonoInvalidated, onTokenReceived }, ref) => {
   const reset = () => onBackToSelector();
 
   useImperativeHandle(ref, () => ({
@@ -82,6 +83,7 @@ const SignUpMethod = forwardRef<SignUpMethodHandle, SignUpMethodProps>(({ onNext
           state={phoneAuth}
           onStateChange={onPhoneAuthChange}
           onTelefonoInvalidated={onTelefonoInvalidated}
+          onTokenReceived={onTokenReceived}
         />
       )}
     </div>

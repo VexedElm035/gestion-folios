@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Input from '@/components/form/input/Input'
 import InputOtp from '@/components/form/input/InputOtp'
+import { api } from '@/utils/api'
 
 import type { PhoneAuthState, SignupData, SignupLocks } from '../../signupTypes'
 
@@ -14,9 +15,10 @@ type TelMethodProps = {
   onStateChange: (patch: Partial<PhoneAuthState>) => void;
 
   onTelefonoInvalidated: () => void;
+  onTokenReceived?: (token: string) => void;
 };
 
-const TelMethod = ({ onNext, onPrefill, onLock, state, onStateChange, onTelefonoInvalidated }: TelMethodProps) => {
+const TelMethod = ({ onNext, onPrefill, onLock, state, onStateChange, onTelefonoInvalidated, onTokenReceived }: TelMethodProps) => {
   const { step, telefono, code, verifiedTelefono } = state;
   const [error, setError] = useState<string | null>(null);
 
@@ -36,7 +38,7 @@ const TelMethod = ({ onNext, onPrefill, onLock, state, onStateChange, onTelefono
     onStateChange({ telefono: next });
   };
 
-  const send2faCode = () => {
+  const send2faCode = async () => {
     setError(null);
     const digits = telefono.replace(/\D/g, '');
     if (digits.length !== 10) {
@@ -44,21 +46,35 @@ const TelMethod = ({ onNext, onPrefill, onLock, state, onStateChange, onTelefono
       return;
     }
 
-    onStateChange({ telefono: digits, step: 'code' });
+    try {
+      await api.checkPhone(digits);
+      await api.sendCode(digits);
+      onStateChange({ telefono: digits, step: 'code' });
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Error al enviar código');
+    }
   };
 
-  const verify2faCode = () => {
+  const verify2faCode = async () => {
     setError(null);
     if (!code.trim()) {
       setError('Ingresa el código.');
       return;
     }
 
-    const digits = telefono.replace(/\D/g, '');
-    onPrefill({ telefono: digits });
-    onLock({ telefono: true });
-    onStateChange({ step: 'verified', verifiedTelefono: digits, code: '' });
-    onNext();
+    try {
+      const digits = telefono.replace(/\D/g, '');
+      const res = await api.verifyCode(digits, code);
+
+      if (onTokenReceived) onTokenReceived(res.verification_token);
+
+      onPrefill({ telefono: digits });
+      onLock({ telefono: true });
+      onStateChange({ step: 'verified', verifiedTelefono: digits, code: '' });
+      onNext();
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Código incorrecto');
+    }
   };
 
   const continueIfVerified = () => {
@@ -97,8 +113,8 @@ const TelMethod = ({ onNext, onPrefill, onLock, state, onStateChange, onTelefono
             {error && <p className='signup-info-caption signup-info-caption-error'>{error}</p>}
             <div className='signup-any-method-button-container'>
 
-            {/* <button className='signup-button-back' onClick={resetToSelector}>Cancelar</button> */}
-            <button className='signup-button-next' onClick={send2faCode}>Siguiente</button >
+              {/* <button className='signup-button-back' onClick={resetToSelector}>Cancelar</button> */}
+              <button className='signup-button-next' onClick={send2faCode}>Siguiente</button >
             </div>
           </>
         )}
@@ -106,7 +122,7 @@ const TelMethod = ({ onNext, onPrefill, onLock, state, onStateChange, onTelefono
         {step === 'code' && (
           <>
             <div>
-              <p className='signup-info-caption'>Te enviamos un código al <span style={{'color':'var(--secondary-text-color)'}}>{telefono}</span></p>
+              <p className='signup-info-caption'>Te enviamos un código al <span style={{ 'color': 'var(--secondary-text-color)' }}>{telefono}</span></p>
               <div className='signup-tel-method-resend'>
                 <p className='signup-info-caption'>No lo recibiste?</p>
                 <button className='signup-button-back change-phone-number' onClick={send2faCode}>Reenviar código</button>

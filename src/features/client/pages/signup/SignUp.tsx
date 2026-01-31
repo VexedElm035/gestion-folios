@@ -55,6 +55,7 @@ const SignUp = () => {
   const selectedMethodRef = useRef<SignupMethod>(INITIAL_METHOD);
   const [curpState, setCurpState] = useState<CurpState>(INITIAL_CURP_STATE);
   const [phoneAuth, setPhoneAuth] = useState<PhoneAuthState>(INITIAL_PHONE_AUTH);
+  const [verificationToken, setVerificationToken] = useState<string | null>(null);
 
   const phoneVerifyExpiryTimeoutRef = useRef<number | null>(null);
   const phoneVerifyExpiryAtRef = useRef<number | null>(null);
@@ -176,7 +177,7 @@ const SignUp = () => {
 
   useEffect(() => {
     const handdlePopState = (event: PopStateEvent) => {
-      if (event.state?.step){
+      if (event.state?.step) {
         const prevStep = currentStepRef.current;
         const prevMethodView = methodViewRef.current;
         const prevPhoneAuth = phoneAuthRef.current;
@@ -240,7 +241,7 @@ const SignUp = () => {
     if (step === 'form') stopPhoneVerifyExpiry();
     setCurrentStep(step);
     if (pushToHistory) {
-      window.history.pushState({step}, '');
+      window.history.pushState({ step }, '');
       setHistory((prev) => [...prev, step]);
     }
   };
@@ -272,41 +273,44 @@ const SignUp = () => {
       </section>
 
       <section className='signup-main-container'>
-        {currentStep === 'welcome' && <WelcomeMessage goNext={goNext}/>}
+        {currentStep === 'welcome' && <WelcomeMessage goNext={goNext} />}
         {currentStep === 'method' && (
           <SignUpMethod
-          ref={signUpMethodRef}
-          onNext={() => {
-            methodCompletedRef.current = true;
-            navigateToStep('form', true);
-          }}
-          onPrefill={(patch) => setData((prev) => ({ ...prev, ...patch }))}
-          onLock={(patch) => setLocks((prev) => ({ ...prev, ...patch }))}
-          methodView={methodView}
-          onSelectMethod={handleSelectMethod}
-          onBackToSelector={handleBackToSelector}
-          curpState={curpState}
-          onCurpStateChange={(patch) => setCurpState((prev) => ({ ...prev, ...patch }))}
-          phoneAuth={phoneAuth}
-          onPhoneAuthChange={(patch) => setPhoneAuth((prev) => ({ ...prev, ...patch }))}
-          onTelefonoInvalidated={handleTelefonoInvalidated}
+            ref={signUpMethodRef}
+            onNext={() => {
+              methodCompletedRef.current = true;
+              navigateToStep('form', true);
+            }}
+            onPrefill={(patch) => setData((prev) => ({ ...prev, ...patch }))}
+            onLock={(patch) => setLocks((prev) => ({ ...prev, ...patch }))}
+            methodView={methodView}
+            onSelectMethod={handleSelectMethod}
+            onBackToSelector={handleBackToSelector}
+            curpState={curpState}
+            onCurpStateChange={(patch) => setCurpState((prev) => ({ ...prev, ...patch }))}
+            phoneAuth={phoneAuth}
+            onPhoneAuthChange={(patch) => setPhoneAuth((prev) => ({ ...prev, ...patch }))}
+            onTelefonoInvalidated={handleTelefonoInvalidated}
+            onTokenReceived={(token) => setVerificationToken(token)}
           />
         )}
         {currentStep === 'form' && (
           <FormData
-          data={data}
-          locks={locks}
-          onChange={(patch) => setData((prev) => ({ ...prev, ...patch }))}
-          onSubmitSuccess={() => {
-            stopPhoneVerifyExpiry();
-            clearAllFormData();
-            methodCompletedRef.current = false;
-            setSelectedMethod(INITIAL_METHOD);
-            setMethodView(INITIAL_METHOD);
-            setCurpState(INITIAL_CURP_STATE);
-            setPhoneAuth(INITIAL_PHONE_AUTH);
-            navigateToStep('thankyou', true);
-          }}
+            data={data}
+            locks={locks}
+            verificationToken={verificationToken}
+            onChange={(patch) => setData((prev) => ({ ...prev, ...patch }))}
+            onSubmitSuccess={() => {
+              stopPhoneVerifyExpiry();
+              clearAllFormData();
+              methodCompletedRef.current = false;
+              setSelectedMethod(INITIAL_METHOD);
+              setMethodView(INITIAL_METHOD);
+              setCurpState(INITIAL_CURP_STATE);
+              setPhoneAuth(INITIAL_PHONE_AUTH);
+              setVerificationToken(null);
+              navigateToStep('thankyou', true);
+            }}
           />
         )}
         {currentStep === 'thankyou' && <ThankYouPage />}
@@ -317,10 +321,6 @@ const SignUp = () => {
           <IoIosArrowBack />
           <p>Regresar</p>
         </button>
-        {/* <button className='signup-navigation-button signup-navigation-button-next' style={!canGoNext ? { display: 'none' } : {}}onClick={goNext} disabled={!canGoNext} aria-label="Siguiente">
-          <p>Siguiente</p>
-          <IoIosArrowForward size={30} />
-        </button> */}
       </section>
     </div>
   )
