@@ -5,6 +5,16 @@ import { groupBy as groupByUtil } from '@/utils/groupBy';
 import { api } from '@/utils/api';
 import './participants.css';
 
+type BackendParticipant = {
+  folio?: { folio: string }
+  nombre: string
+  apellido: string
+  distancia?: number
+  categoria?: string
+  telefono: string
+  created_at: string
+}
+
 type Person = {
   folio: string
   name: string
@@ -37,7 +47,7 @@ const Participants = () => {
         if (!isMounted) return;
 
         // Map backend data to frontend model
-        const mapped = data.map((p: any) => ({
+        const mapped = data.map((p: BackendParticipant) => ({
           folio: p.folio?.folio || 'N/A', // Assuming relation is loaded
           name: p.nombre,
           apellido: p.apellido,
@@ -48,8 +58,8 @@ const Participants = () => {
         }));
         setPersons(mapped);
         setError(null);
-      } catch (err: any) {
-        if (isMounted) setError(err.message);
+      } catch (err: unknown) {
+        if (isMounted) setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
         if (isMounted && !isBackground) setLoading(false);
       }
@@ -88,7 +98,7 @@ const Participants = () => {
   const grouped = useMemo(() => {
     if (!groupBy) return null
 
-    const map = groupByUtil(persons, (p) => (p as any)[groupBy])
+    const map = groupByUtil(persons, (p) => (p as Record<string, string>)[groupBy])
     const entries = Array.from(map.entries())
 
     entries.sort((a, b) => {
