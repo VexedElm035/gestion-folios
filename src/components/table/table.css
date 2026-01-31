@@ -128,7 +128,7 @@
 }
 
 .column-divider-button {
-  width: 1px;
+  width: 2px;
   height: var(--caption-text);
   background: rgba(var(--secondary-text-color-rgb), 0.5);
   border: none;

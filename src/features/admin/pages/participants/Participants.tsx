@@ -120,6 +120,7 @@ const Participants = () => {
     <div>
       {!groupBy && (
         <Table
+          id="participants-table-main"
           columns={columns}
           rows={persons}
           visibleColumnKeys={visibleColumnKeys}
@@ -136,6 +137,7 @@ const Participants = () => {
                 {groupBy === 'distancia' ? `Distancia: ${groupValue}` : `Categoría: ${groupValue}`}
               </div>
               <Table
+                id={`participants-table-${groupBy}-${groupValue}`}
                 columns={columns}
                 rows={rows}
                 visibleColumnKeys={visibleColumnKeys}
