@@ -32,6 +32,7 @@ type ColumnDef = {
   key: TableColumnKey
   label: string
   render: (person: Person) => ReactNode
+  sorter?: (a: Person, b: Person) => number
 }
 
 const Participants = () => {
@@ -149,13 +150,40 @@ const Participants = () => {
 
   const columns = useMemo<ColumnDef[]>(
     () => [
-      { key: 'folio', label: 'Folio', render: (p) => p.folio },
-      { key: 'name', label: 'Nombre', render: (p) => editingId === p.id ? <input className="edit-input" value={editFormData.name || ''} onChange={e => handleInputChange('name', e.target.value)} /> : p.name },
-      { key: 'apellido', label: 'Apellido', render: (p) => editingId === p.id ? <input className="edit-input" value={editFormData.apellido || ''} onChange={e => handleInputChange('apellido', e.target.value)} /> : p.apellido },
-      { key: 'distancia', label: 'Distancia', render: (p) => editingId === p.id ? <input className="edit-input" value={editFormData.distancia || ''} onChange={e => handleInputChange('distancia', e.target.value)} /> : p.distancia },
-      { key: 'categoria', label: 'Categoria', render: (p) => editingId === p.id ? <input className="edit-input" value={editFormData.categoria || ''} onChange={e => handleInputChange('categoria', e.target.value)} /> : p.categoria },
-      { key: 'tel', label: 'Telefono', render: (p) => editingId === p.id ? <input className="edit-input" value={editFormData.tel || ''} onChange={e => handleInputChange('tel', e.target.value)} /> : p.tel },
-      { key: 'fecha_registro', label: 'Fecha de Registro', render: (p) => p.fecha_registro },
+      { key: 'folio', label: 'Folio', render: (p) => p.folio, sorter: (a, b) => a.folio.localeCompare(b.folio) },
+      { key: 'name', label: 'Nombre', render: (p) => editingId === p.id ? <input className="edit-input" value={editFormData.name || ''} onChange={e => handleInputChange('name', e.target.value)} /> : p.name, sorter: (a, b) => a.name.localeCompare(b.name) },
+      { key: 'apellido', label: 'Apellido', render: (p) => editingId === p.id ? <input className="edit-input" value={editFormData.apellido || ''} onChange={e => handleInputChange('apellido', e.target.value)} /> : p.apellido, sorter: (a, b) => a.apellido.localeCompare(b.apellido) },
+      {
+        key: 'distancia', label: 'Distancia', render: (p) => editingId === p.id ? <input className="edit-input" value={editFormData.distancia || ''} onChange={e => handleInputChange('distancia', e.target.value)} /> : p.distancia, sorter: (a, b) => {
+          const valA = parseInt(a.distancia.replace(/\D/g, '') || '0');
+          const valB = parseInt(b.distancia.replace(/\D/g, '') || '0');
+          return valA - valB;
+        }
+      },
+      { key: 'categoria', label: 'Categoria', render: (p) => editingId === p.id ? <input className="edit-input" value={editFormData.categoria || ''} onChange={e => handleInputChange('categoria', e.target.value)} /> : p.categoria, sorter: (a, b) => a.categoria.localeCompare(b.categoria) },
+      { key: 'tel', label: 'Telefono', render: (p) => editingId === p.id ? <input className="edit-input" value={editFormData.tel || ''} onChange={e => handleInputChange('tel', e.target.value)} /> : p.tel, sorter: (a, b) => a.tel.localeCompare(b.tel) },
+      {
+        key: 'fecha_registro',
+        label: 'Fecha de Registro',
+        render: (p) => p.fecha_registro,
+        sorter: (a, b) => {
+          // Assuming format DD/MM/YYYY or similar from localeDateString. 
+          // localeDateString might vary by browser. 
+          // Ideally parse real date, but we only have string here.
+          // We should probably store real date object in Person or IS0 string for reliable sort.
+          // For now, let's try to parse it if standard, or improved approach: pass raw timestamps in Person if possible.
+          // Since we mapped it in fetchParticipants, let's just try basic string compare or simple parse.
+          // Format: "D/M/YYYY" usually in ES locale?
+          const partsA = a.fecha_registro.split('/');
+          const partsB = b.fecha_registro.split('/');
+          if (partsA.length === 3 && partsB.length === 3) {
+            const dateA = new Date(parseInt(partsA[2]), parseInt(partsA[1]) - 1, parseInt(partsA[0]));
+            const dateB = new Date(parseInt(partsB[2]), parseInt(partsB[1]) - 1, parseInt(partsB[0]));
+            return dateA.getTime() - dateB.getTime();
+          }
+          return a.fecha_registro.localeCompare(b.fecha_registro);
+        }
+      },
     ],
     [editingId, editFormData]
   );
@@ -192,9 +220,10 @@ const Participants = () => {
           columns={columns}
           rows={persons}
           visibleColumnKeys={visibleColumnKeys}
-          getRowKey={(p) => p.folio}
+          getRowKey={(p: Person) => p.folio}
           stickyHeader
           onRowContextMenu={handleRowContextMenu}
+          defaultSort={{ key: 'fecha_registro', direction: 'desc' }}
         />
       )}
 
@@ -210,8 +239,9 @@ const Participants = () => {
                 columns={columns}
                 rows={rows}
                 visibleColumnKeys={visibleColumnKeys}
-                getRowKey={(p) => p.folio}
+                getRowKey={(p: Person) => p.folio}
                 stickyHeader={false}
+                defaultSort={{ key: 'fecha_registro', direction: 'desc' }}
               />
             </section>
           ))}
@@ -229,16 +259,16 @@ const Participants = () => {
         >
           <button onClick={handleEdit} className='context-menu-edit'>
             <IoMdCreate /> Editar
-            </button>
+          </button>
           <button onClick={handleDelete} className='context-menu-delete'>
             <IoIosTrash /> Eliminar
-            </button>
+          </button>
         </div>
       )}
 
       {editingId && (
         <div className="edit-actions-menu"
-        style={{ top: contextMenu.y + 10, left: contextMenu.x }}>
+          style={{ top: contextMenu.y + 10, left: contextMenu.x }}>
           <button onClick={handleSave} style={{ padding: '6px 12px', background: '#4CAF50', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Guardar</button>
           <button onClick={handleCancel} style={{ padding: '6px 12px', background: '#f44336', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Cancelar</button>
         </div>
