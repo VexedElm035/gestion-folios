@@ -51,5 +51,29 @@ export const api = {
         const res = await fetch(`${API_URL}/participants`);
         if (!res.ok) throw new Error('Error fetching participants');
         return res.json();
+    },
+
+    deleteParticipant: async (id: string) => {
+        const res = await fetch(`${API_URL}/participants/${id}`, {
+            method: 'DELETE',
+        });
+        if (!res.ok) throw new Error('Error eliminando participante');
+        return res.json();
+    },
+
+    updateParticipant: async (id: string, data: any) => {
+        const res = await fetch(`${API_URL}/participants/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(data),
+        });
+        if (!res.ok) {
+            const error = await res.json();
+            throw new Error(error.message || 'Error actualizando participante');
+        }
+        return res.json();
     }
 };

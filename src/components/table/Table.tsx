@@ -15,9 +15,10 @@ type TableProps<Row> = {
   visibleColumnKeys?: ReadonlyArray<string>
   stickyHeader?: boolean
   id?: string // For persistence
+  onRowContextMenu?: (e: React.MouseEvent, row: Row) => void
 }
 
-const Table = <Row,>({ columns, rows, getRowKey, visibleColumnKeys, stickyHeader = true, id }: TableProps<Row>) => {
+const Table = <Row,>({ columns, rows, getRowKey, visibleColumnKeys, stickyHeader = true, id, onRowContextMenu }: TableProps<Row>) => {
   const visible = visibleColumnKeys
     ? columns.filter((col) => visibleColumnKeys.includes(col.key))
     : columns
@@ -62,7 +63,15 @@ const Table = <Row,>({ columns, rows, getRowKey, visibleColumnKeys, stickyHeader
         </tfoot>
         <tbody>
           {rows.map((row, index) => (
-            <tr key={getRowKey ? getRowKey(row, index) : index}>
+            <tr
+              key={getRowKey ? getRowKey(row, index) : index}
+              onContextMenu={(e) => {
+                if (onRowContextMenu) {
+                  e.preventDefault();
+                  onRowContextMenu(e, row);
+                }
+              }}
+            >
               {visible.map((col, colIndex) => (
                 <>
                   <td key={col.key} style={{ width: widths[col.key] ? `${widths[col.key]}%` : 'auto', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
