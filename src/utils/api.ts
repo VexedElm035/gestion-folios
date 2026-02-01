@@ -37,7 +37,10 @@ export const api = {
     register: async (data: any) => {
         const res = await fetch(`${API_URL}/participants`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
             body: JSON.stringify(data),
         });
         if (!res.ok) {
@@ -48,7 +51,9 @@ export const api = {
     },
 
     getParticipants: async () => {
-        const res = await fetch(`${API_URL}/participants`);
+        const res = await fetch(`${API_URL}/participants`, {
+            headers: { 'Accept': 'application/json' }
+        });
         if (!res.ok) throw new Error('Error fetching participants');
         return res.json();
     },

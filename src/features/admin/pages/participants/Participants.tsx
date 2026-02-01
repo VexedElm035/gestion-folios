@@ -3,6 +3,7 @@ import { useTableView, type TableColumnKey } from '@/context/TableViewContext';
 import { Table, RunnerButton } from "@/components";
 import { groupBy as groupByUtil } from '@/utils/groupBy';
 import { api } from '@/utils/api';
+import { IoMdCreate, IoIosTrash } from "react-icons/io";
 import './participants.css';
 
 type Person = {
@@ -74,7 +75,7 @@ const Participants = () => {
     // Auto-refresh every 10 seconds
     const intervalId = setInterval(() => {
       fetchParticipants(true);
-    }, 10000);
+    }, 3000);
 
     return () => {
       isMounted = false;
@@ -221,20 +222,23 @@ const Participants = () => {
         <RunnerButton />
       </div>
 
-      {/* Context Menu */}
       {contextMenu.visible && (
         <div
           className="context-menu"
-          style={{ top: contextMenu.y, left: contextMenu.x, position: 'fixed', zIndex: 1000, background: 'white', border: '1px solid #ccc', borderRadius: '4px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}
+          style={{ top: contextMenu.y, left: contextMenu.x }}
         >
-          <button onClick={handleEdit} style={{ display: 'block', width: '100%', padding: '8px 16px', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer' }}>Editar</button>
-          <button onClick={handleDelete} style={{ display: 'block', width: '100%', padding: '8px 16px', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', color: 'red' }}>Eliminar</button>
+          <button onClick={handleEdit} className='context-menu-edit'>
+            <IoMdCreate /> Editar
+            </button>
+          <button onClick={handleDelete} className='context-menu-delete'>
+            <IoIosTrash /> Eliminar
+            </button>
         </div>
       )}
 
-      {/* Edit Actions Menu (Centered below row - simplified to fixed bottom center for now or try to position) */}
       {editingId && (
-        <div className="edit-actions-menu" style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)', zIndex: 1000, background: 'white', padding: '10px', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', display: 'flex', gap: '10px' }}>
+        <div className="edit-actions-menu"
+        style={{ top: contextMenu.y + 10, left: contextMenu.x }}>
           <button onClick={handleSave} style={{ padding: '6px 12px', background: '#4CAF50', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Guardar</button>
           <button onClick={handleCancel} style={{ padding: '6px 12px', background: '#f44336', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Cancelar</button>
         </div>

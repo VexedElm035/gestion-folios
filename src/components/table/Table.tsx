@@ -1,4 +1,4 @@
-import type { Key, ReactNode } from 'react';
+import React, { type Key, type ReactNode } from 'react';
 import './table.css';
 import { useColumnResizing } from './useColumnResizing';
 
@@ -33,16 +33,15 @@ const Table = <Row,>({ columns, rows, getRowKey, visibleColumnKeys, stickyHeader
         <thead>
           <tr>
             {visible.map((col, index) => (
-              <>
+              <React.Fragment key={col.key}>
                 <th
-                  key={col.key}
                   data-key={col.key}
                   style={{ width: widths[col.key] ? `${widths[col.key]}%` : 'auto', boxSizing: 'border-box' }}
                 >
                   <span className="th-content">{col.label}</span>
                 </th>
                 {index < visible.length - 1 && (
-                  <th key={`divider-${col.key}`} className="column-divider-cell">
+                  <th className="column-divider-cell">
                     <button
                       className="column-divider-button"
                       aria-label="Divisor de columna"
@@ -50,7 +49,7 @@ const Table = <Row,>({ columns, rows, getRowKey, visibleColumnKeys, stickyHeader
                     />
                   </th>
                 )}
-              </>
+              </React.Fragment>
             ))}
           </tr>
         </thead>
@@ -73,16 +72,16 @@ const Table = <Row,>({ columns, rows, getRowKey, visibleColumnKeys, stickyHeader
               }}
             >
               {visible.map((col, colIndex) => (
-                <>
-                  <td key={col.key} style={{ width: widths[col.key] ? `${widths[col.key]}%` : 'auto', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+                <React.Fragment key={col.key}>
+                  <td style={{ width: widths[col.key] ? `${widths[col.key]}%` : 'auto', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
                     {col.render(row)}
                   </td>
                   {colIndex < visible.length - 1 && (
-                    <td key={`divider-${col.key}`} className="column-divider-cell">
+                    <td className="column-divider-cell">
                       <div className="column-divider-spacer" />
                     </td>
                   )}
-                </>
+                </React.Fragment>
               ))}
             </tr>
           ))}
